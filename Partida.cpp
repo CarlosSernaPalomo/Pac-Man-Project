@@ -91,7 +91,10 @@ bool Partida::LeerEnCurso(){
 }
 
 void Partida::ActualizarEnCurso(){
-	if(chrono::steady_clock::now() - tComienzoPartida > LeerMapa().duracionPartida || comecocos.LeerVidas() == 0 || victoria){
+	if(chrono::steady_clock::now() - tComienzoPartida > LeerMapa().duracionPartida
+	|| comecocos.LeerVidas() == 0
+	|| victoria)
+	{
 		enCurso = false;
 	}
 }
@@ -103,6 +106,43 @@ void Partida::ActualizarHuida(){
 }
 
 void Partida::Comer(){
+	
+	//Se comprueba si el comecocos se ha comido un coco
+	if(cocos.LeerMapaDeCocos(comecocos.LeerCoorActuales){
+		//El metodo EliminarCoco sobrescribe con false la casilla correspondiente del mapaDeCocos y decrementa en uno los cocosRestantes
+		cocos.EliminarCoco(comecocos.LeerCoorActuales);
+	}
+	
+	//Se comprueba si el comecocos se ha comido un supercoco
+	if(supercocos.LeerMapaDeCocos(comecocos.LeerCoorActuales){
+		supercocos.EliminarCoco(comecocos.LeerCoorActuales);
+		//Si se ha comido un supercoco, ademas de llamar a EliminarCoco hay que activar la huida
+		huida = true;
+		tComienzoHuida = chrono::steady_clock::now();
+	}
+	
+	//Si los fantasmas estan huyendo, el comecocos se los puede comer
+	if(huyendo){
+		if(comecocos.LeerCoorActuales() == fantasmaRojo.LeerCoorActuales()){
+			fantasmaRojo.MoverACoorIni();
+		}else if(comecocos.LeerCoorActuales() == fantasmaRosa.LeerCoorActuales()){
+			fantasmaRosa.MoverACoorIni();
+		}else if(comecocos.LeerCoorActuales() == fantasmaNaranja.LeerCoorActuales()){
+			fantasmaNaranja.MoverACoorIni();
+		}else if(comecocos.LeerCoorActuales() == fantasmaCian.LeerCoorActuales()){
+			fantasmaCian.MoverACoorIni();
+		}
+		
+	//Si los fantasmas no estan huyendo, se pueden comer al comecocos
+	}else{
+		if(comecocos.LeerCoorActuales() == fantasmaRojo.LeerCoorActuales()
+		|| comecocos.LeerCoorActuales() == fantasmaRosa.LeerCoorActuales()
+		|| comecocos.LeerCoorActuales() == fantasmaNaranja.LeerCoorActuales()
+		|| comecocos.LeerCoorActuales() == fantasmaCian.LeerCoorActuales())
+		{
+			comecocos.MoverACoorIni();
+			comecocos.PerderVida();
+		}
 	
 }
 
@@ -124,10 +164,12 @@ void Partida::Jugar(){
 		fantasmaRojo.Moverse(huida, comecocos.LeerCoorActuales); //
 		/*Sobre el objetivo de cada fantasma:
 			Si no estan huyendo:
-				Para el fantasmaRojo el objetivo seran las coordenadas de Pac-Man.
-				El fantasmaRosa hay que ver como lo hacemos pero quiza lo mas sencillo seria que sus coordenadas deseadas fueran la casilla que Pac-Man tiene justo en frente, siendo Pac-Man para este fantasma una casilla no habitable.
-				Respecto al fantasmaNaranja, si Pac-Man esta cerca (a menos de diez casillas en distancia de Manhattan) el objetivo seran las coordenadas de Pac-Man; si no, se mueve en una direccion aleatoria hasta toparse con un muro y asi sucesivamente.
-				El fantasmaCian utilizara aleatoriamente una de las tres estrategias anteriores.
+				- Para el fantasmaRojo el objetivo seran las coordenadas de Pac-Man.
+				- El fantasmaRosa hay que ver como lo hacemos pero quiza lo mas sencillo seria que sus coordenadas deseadas fueran
+				  la casilla que Pac-Man tiene justo en frente, siendo Pac-Man para este fantasma una casilla no habitable.
+				- Respecto al fantasmaNaranja, si Pac-Man esta cerca (a menos de diez casillas en distancia de Manhattan) el objetivo seran
+				  las coordenadas de Pac-Man; si no, se mueve en una direccion aleatoria hasta toparse con un muro y asi sucesivamente.
+				- El fantasmaCian utilizara aleatoriamente una de las tres estrategias anteriores.
 			Si estan huyendo, el objetivo de todos ellos es entrar en el refugio.*/
 		
 		//Se comprueba si alguien se ha comido algo y se ejecutan las acciones correspondientes
@@ -138,6 +180,9 @@ void Partida::Jugar(){
 		
 		//Se comprueban las condiciones de finalizacion de la partida
 		ActualizarEnCurso();
+		
+		//Se comprueba si ha finalizado la huida en caso de que este activada
+		ActualizarHuida();
 		
 		//Actualizar interfaz grafica
 		//LoQueSea();
