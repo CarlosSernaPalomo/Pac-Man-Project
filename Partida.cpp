@@ -106,21 +106,49 @@ void Partida::Comer(){
 	
 }
 
-bool Partida::Jugar(){
+void Partida::Jugar(){
 	
 	while(enCurso){
 		
+		//Movimiento del jugador
+		comecocos.ActualizarDirDeseada(); //Aqui se espera un tiempo y, si se pulsa una tecla, se actualiza la direccion deseada
+		comecocos.Moverse(); //Aqui se comprueba si es posible moverse en la direccion deseada y, si es posible, se hace; si no, se mantiene la direccion actual
 		
+		/*Movimiento de los fantasmas:
+		el metodo Moverse determina primero el objetivo, luego llama al algoritmo A*
+		(que determina el camino optimo hasta las coordenadas deseadas y, sabiendo el camino,
+		determina a que casilla se tiene que mover el fantasma) y finalmente mueve el fantasma*/
+		fantasmaRojo.Moverse(huida, comecocos.LeerCoorActuales); //
+		fantasmaRojo.Moverse(huida, comecocos.LeerCoorActuales); //
+		fantasmaRojo.Moverse(huida, comecocos.LeerCoorActuales); //
+		fantasmaRojo.Moverse(huida, comecocos.LeerCoorActuales); //
+		/*Sobre el objetivo de cada fantasma:
+			Si no estan huyendo:
+				Para el fantasmaRojo el objetivo seran las coordenadas de Pac-Man.
+				El fantasmaRosa hay que ver como lo hacemos pero quiza lo mas sencillo seria que sus coordenadas deseadas fueran la casilla que Pac-Man tiene justo en frente, siendo Pac-Man para este fantasma una casilla no habitable.
+				Respecto al fantasmaNaranja, si Pac-Man esta cerca (a menos de diez casillas en distancia de Manhattan) el objetivo seran las coordenadas de Pac-Man; si no, se mueve en una direccion aleatoria hasta toparse con un muro y asi sucesivamente.
+				El fantasmaCian utilizara aleatoriamente una de las tres estrategias anteriores.
+			Si estan huyendo, el objetivo de todos ellos es entrar en el refugio.*/
 		
-	}
+		//Se comprueba si alguien se ha comido algo y se ejecutan las acciones correspondientes
+		Comer();
+		
+		//Se comprueba la condicion de victoria
+		ActualizarVictoria();
+		
+		//Se comprueban las condiciones de finalizacion de la partida
+		ActualizarEnCurso();
+		
+		//Actualizar interfaz grafica
+		//LoQueSea();
+		
+	} //Fin del bucle
 	
 	if(victoria){
-		lo que sea;
+		//HacemosAlgo();
 	}else{
-		lo que sea;
+		//HacemosOtraCosa();
 	}
 	
 }
-
-
 
