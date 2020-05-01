@@ -6,8 +6,8 @@ using namespace std;
 class Coordenadas {
 public:
     Coordenadas( int a = 0, int b = 0 ) { x = a; y = b; } 
-    bool operator ==( const Coordenadas& o ) { return o.x == x && o.y == y; }
-    Coordenadas operator +( const Coordenadas& o ) { return Coordenadas( o.x + x, o.y + y ); }
+    bool operator ==( const Coordenadas& c ) { return c.x == x && c.y == y; }
+    Coordenadas operator +( const Coordenadas& c ) { return Coordenadas( c.x + x, c.y + y ); }
     int x, y;
 };
 
@@ -58,11 +58,11 @@ public:
             for( int s = 0; s < w; s++ )
                 m[s][r] = t[r][s];
     }
-    int operator() (Coordenadas coordenadas) { return m[coordenadas.x][coordenadas.y]; } //Creo que se le deberia pasar un objeto de tipo Coordenadas (antes llamado point) en vez de dos int
+    int operator() (Coordenadas c) { return m[c.x][c.y]; } //Creo que se le deberia pasar un objeto de tipo Coordenadas (antes llamado point) en vez de dos int
     char m[26][29];
     int w, h;
-	void PonerPared (Coordenadas coordenadas); //Aqui lo mismo, seria mejor pasarle un objeto Coordenadas
-	void PonerPasillo (Coordenadas coordenadas);
+	void PonerPared (Coordenadas c); //Aqui lo mismo, seria mejor pasarle un objeto Coordenadas
+	void PonerPasillo (Coordenadas c);
 };
 
 //Mapa para el jugador
@@ -112,18 +112,18 @@ public:
             for( int s = 0; s < w; s++ )
                 m[s][r] = t[r][s];
     }
-    int operator() (Coordenadas coordenadas) { return m[coordenadas.x][coordenadas.y]; }
+    int operator() (Coordenadas c) { return m[c.x][c.y]; }
     char m[26][29];
     int w, h;
-	void PonerPasillo (Coordenadas coordenadas);
+	void PonerPasillo (Coordenadas c);
 };
 
 
 class Nodo {
 public:
-    bool operator == (const Nodo& o ) { return pos == o.pos; }
-    bool operator == (const Coordenadas& o ) { return pos == o; }
-    bool operator < (const Nodo& o ) { return dist + cost < o.dist + o.cost; }
+    bool operator == (const Nodo& n ) { return pos == n.pos; }
+    bool operator == (const Coordenadas& c ) { return pos == c; }
+    bool operator < (const Nodo& n ) { return dist + cost < n.dist + n.cost; }
     Coordenadas pos, parent;
     int dist, cost;
 };
@@ -138,24 +138,24 @@ public:
         neighbours[6] = Coordenadas(  0,  1 ); neighbours[7] = Coordenadas(  1,  0 );
     }
  
-    int calcDist( Coordenadas& p ){
+    int calcDist( Coordenadas& c ){
         // need a better heuristic
-        int x = end.x - p.x, y = end.y - p.y;
+        int x = end.x - c.x, y = end.y - c.y;
         return( x * x + y * y );
     }
  
-    bool isValid( Coordenadas& p ) {
-        return ( p.x >-1 && p.y > -1 && p.x < m.w && p.y < m.h );
+    bool isValid( Coordenadas& c ) {
+        return ( c.x >-1 && c.y > -1 && c.x < m.w && c.y < m.h );
     }
  
-    bool existPoint( Coordenadas& p, int cost ) {
+    bool existPoint( Coordenadas& c, int cost ) {
         list<Nodo>::iterator i;
-        i = find( closed.begin(), closed.end(), p );
+        i = find( closed.begin(), closed.end(), c );
         if( i != closed.end() ) {
             if( ( *i ).cost + ( *i ).dist < cost ) return true;
             else { closed.erase( i ); return false; }
         }
-        i = std::find( open.begin(), open.end(), p );
+        i = std::find( open.begin(), open.end(), c );
         if( i != open.end() ) {
             if( ( *i ).cost + ( *i ).dist < cost ) return true;
             else { open.erase( i ); return false; }
@@ -223,17 +223,18 @@ public:
     list<Nodo> closed;
 };
 
-void Mapa::PonerPared (Coordenadas coordenadas){	//Funcion para cambiar coordenada a pared del mapa fantasmas
-	m[x][y]=1;
+void Mapa::PonerPared (Coordenadas c){	//Funcion para cambiar coordenada a pared del mapa fantasmas
+	m[c.x][c.y]=1;
 }
 
-void Mapa::PonerPasillo (Coordenadas coordenadas){	//Funcion para cambiar coordenada a pasillo del mapa fantasmas
-	m[coordenadas.x][coordenadas.y]=0;
+void Mapa::PonerPasillo (Coordenadas c){	//Funcion para cambiar coordenada a pasillo del mapa fantasmas
+	m[c.x][c.y]=0;
 }
 
-void MapaJugador::ponepasillo (int x, int y){	//Funcion para cambiar coordenada a pasillo del mapa jugador
-	m[x][y]=0;
-}
+//Creo que no es necesario alterar el mapa del jugador una vez comienza la partida
+/*void MapaJugador::PonerPasillo (Coordenadas c){	//Funcion para cambiar coordenada a pasillo del mapa jugador
+	m[c.x][c.y]=0;
+}*/
 
 //Funcion para buscar la siguente posicion de los fantasmas
 Coordenadas nextpos (Coordenadas s, Coordenadas e, Mapa m){	//s=punto partida, e=punto destino, m=mapa fantasmas
