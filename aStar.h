@@ -287,6 +287,8 @@ void VisualizaMapa (MapaJugador m){
             else{
 				if(m(poscionActual) == 0) //Pasillo
                 	cout << " ";
+                else if(m(posicionActual) == 1) //Pared
+            		cout << char(0xdb);
             	else if(m(poscionActual) == 2)	//Coco
                 	cout << ".";
 				else if(m(poscionActual) == 3) //Supercoco
