@@ -1,5 +1,6 @@
 int main(){
-		
+	
+	//Creacion del mapa
 	char semilla[31][28] = {
 	  //00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},//00
@@ -34,9 +35,9 @@ int main(){
 		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},//29
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},//30
 	};
-	
 	Mapa m(semilla);
 	
+	//Creacion del nivel
 	Nivel nivel();
 	nivel.mapa = m;
 	nivel.dirIniComecocos = 'd';
@@ -49,7 +50,11 @@ int main(){
 	nivel.duracionHuida = 10;
 	nivel.duracionPartida = 300;
 	
+	//Creacion de la partida
 	Partida partida(nivel);
+	
+	//Jugar
+	partida.Jugar();
 		
 	return 0;	
 }
