@@ -207,7 +207,6 @@ public:
         int cost = 1 + closed.back().cost; 
         path.push_front( closed.back().pos );
         Coordenadas parent = closed.back().parent;
- 
         for( list<Nodo>::reverse_iterator i = closed.rbegin(); i != closed.rend(); i++ ) {
             if( ( *i ).pos == parent && !( ( *i ).pos == start ) ) {
                 path.push_front( ( *i ).pos );
@@ -217,6 +216,7 @@ public:
         path.push_front( start );
         return cost;
     }
+    
     Mapa m; Coordenadas end, start;
     Coordenadas neighbours[8];
     list<Nodo> open;
