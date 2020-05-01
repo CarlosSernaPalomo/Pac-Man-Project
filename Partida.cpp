@@ -1,6 +1,4 @@
-#include <chrono>
-
-using namespace std;
+#include "headers.h"
 
 class Partida{
 	
