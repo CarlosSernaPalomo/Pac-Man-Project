@@ -36,7 +36,7 @@ class Comecocos:public Ente{
 class Fantasma:public Ente{
 	public:
 		void InicializarCasillasHabitables(bool** paredes);
-		void ActualizarCasillasHabitables(point coorActualesComecocos);
+		//void ActualizarCasillasHabitables(point coorActualesComecocos); //Como Ivan ha creado una clase Mapa con metodos para modificarlo, este metodo ya no es necesario
 		void Moverse(bool huida, point coorActualesComecocos);
 		void Perseguir(point coorActualesComecocos);
 		void CortarElPaso(point coorActualesComecocos);
@@ -80,8 +80,8 @@ point Ente::LeerCoorActuales(){
 
 //Métodos de Comecocos
 void Comecocos::InicializarCasillasHabitables(bool** paredes, point coorPuerta){
-	casillasHabitables = !paredes; //CARLOS: He supuesto que en la variable paredes los 1s van a ser las paredes y que en la variable casillasHabitables los 1s van a ser las casillas habitables, aunque no tiene por que ser asi	
-	castillasHabitables(coorPuerta) = 0; //CARLOS: No se ahora mismo cual es la manera correcta de acceder a los elementos de casillasHabitables
+	casillasHabitables = paredes; //CARLOS: Viendo el codigo de Ivan creo que lo mas comodo es codificar las casillas habitables como 0s y las no habitables como 1s para que asi coincida con el mapa original (los 0s son pasillos y los 1s paredes)	
+	castillasHabitables(coorPuerta) = 1; //La puerta no es habitable para Pac-Man
 }
 
 void Comecocos::InicializarVidas(int vidasIni){
@@ -136,9 +136,9 @@ void Fantasma::InicializarCasillasHabitables(bool** paredes){
 }
 
 //CARLOS: El siguiente metodo se utiliza para hacer la casilla donde esta Pac-Man no habitable o habitable segun corresponda
-void Fantasma::ActualizarCasillasHabitables(point coorActualesComecocos, bool valor){
-	casillasHabitables(coorActualesComecocos) = valor; //CARLOS: De nuevo, no se cual es la forma correcta de acceder a los elementos de casillasHabitables
-}
+/*void Fantasma::ActualizarCasillasHabitables(point coorActualesComecocos, bool valor){
+	casillasHabitables(coorActualesComecocos) = valor;
+}*/
 
 //CARLOS: Faltan Perseguir, CortarElPaso, Deambular, Huir, AEstrella
 
