@@ -10,12 +10,12 @@ class Mapa{//Para que compile
 class Ente{
 	protected://Las hago protected
 		bool** casillasHabitables;//Se podría hacer de int para no complicarse o justificar el bool con que pesa 8 bits frente a los 32 del int. CARLOS: Creo que es una buena justificacion.
-		const pair<int,int> coorIni;
-		pair<int,int> coorActuales;
+		const point coorIni;
+		point coorActuales;
 	public:
-			void InicializarCoor(pair<int,int> coorIni);
+			void InicializarCoor(point coorIni);
 			void MoverACoorIni();
-			pair<int,int> LeerCoorActuales();	
+			point LeerCoorActuales();	
 };
 
 class Comecocos:public Ente{
@@ -24,7 +24,7 @@ class Comecocos:public Ente{
 		char dirDeseada;
 		int vidas;//Se podría utilizar short int y en vez de 32 bits se utilizarían 16. CARLOS: Por mi vale.
 	public:
-		void InicializarCasillasHabitables(bool** paredes, pair<int,int> coorPuerta);
+		void InicializarCasillasHabitables(bool** paredes, point coorPuerta);
 		void InicializarDir(char dirIniComecocos);
 		void InicializarVidas(int vidasIni);
 		int LeerVidas();
@@ -36,10 +36,10 @@ class Comecocos:public Ente{
 class Fantasma:public Ente{
 	public:
 		void InicializarCasillasHabitables(bool** paredes);
-		void ActualizarCasillasHabitables(pair<int,int> coorActualesComecocos);
-		void Moverse(bool huida, pair<int,int> coorActualesComecocos);
-		void Perseguir(pair<int,int> coorActualesComecocos);
-		void CortarElPaso(pair<int,int> coorActualesComecocos);
+		void ActualizarCasillasHabitables(point coorActualesComecocos);
+		void Moverse(bool huida, point coorActualesComecocos);
+		void Perseguir(point coorActualesComecocos);
+		void CortarElPaso(point coorActualesComecocos);
 		void Deambular();
 		void Huir();
 		void AEstrella();
@@ -47,26 +47,26 @@ class Fantasma:public Ente{
 
 class FantasmaRojo:public Fantasma{
 	public:
-		void Moverse(bool huida, pair<int,int> coorActualesComecocos);
+		void Moverse(bool huida, point coorActualesComecocos);
 };
 
 class FantasmaRosa:public Fantasma{
 	public:
-		void Moverse(bool huida, pair<int,int> coorActualesComecocos);
+		void Moverse(bool huida, point coorActualesComecocos);
 };
 
 class FantasmaNaranja:public Fantasma{
 	public:
-		void Moverse(bool huida, pair<int,int> coorActualesComecocos);
+		void Moverse(bool huida, point coorActualesComecocos);
 };
 
 class FantasmaCian:public Fantasma{
 	public:
-		void Moverse(bool huida, pair<int,int> coorActualesComecocos);
+		void Moverse(bool huida, point coorActualesComecocos);
 };
 
 //Metodos de Ente
-void Ente::InicializarCoor(pair<int,int> coorIni){
+void Ente::InicializarCoor(point coorIni){
 	this->coorIni=coorIni;
 }
 
@@ -74,12 +74,12 @@ void Ente::MoverACoorIni(){
 	coorActuales=coorIni;
 }
 
-pair<int,int> Ente::LeerCoorActuales(){
+point Ente::LeerCoorActuales(){
 	return coorActuales;
 }
 
 //Métodos de Comecocos
-void Comecocos::InicializarCasillasHabitables(bool** paredes, pair<int,int> coorPuerta){
+void Comecocos::InicializarCasillasHabitables(bool** paredes, point coorPuerta){
 	casillasHabitables = !paredes; //CARLOS: He supuesto que en la variable paredes los 1s van a ser las paredes y que en la variable casillasHabitables los 1s van a ser las casillas habitables, aunque no tiene por que ser asi	
 	castillasHabitables(coorPuerta) = 0; //CARLOS: No se ahora mismo cual es la manera correcta de acceder a los elementos de casillasHabitables
 }
@@ -136,7 +136,7 @@ void Fantasma::InicializarCasillasHabitables(bool** paredes){
 }
 
 //CARLOS: El siguiente metodo se utiliza para hacer la casilla donde esta Pac-Man no habitable o habitable segun corresponda
-void Fantasma::ActualizarCasillasHabitables(pair<int,int> coorActualesComecocos, bool valor){
+void Fantasma::ActualizarCasillasHabitables(point coorActualesComecocos, bool valor){
 	casillasHabitables(coorActualesComecocos) = valor; //CARLOS: De nuevo, no se cual es la forma correcta de acceder a los elementos de casillasHabitables
 }
 
