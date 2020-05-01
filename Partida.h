@@ -184,7 +184,7 @@ void Partida::Jugar(){
 		ActualizarHuida();
 		
 		//Actualizar interfaz grafica
-		//LoQueSea();
+		//lo que sea
 		
 	} //Fin del bucle
 	
@@ -195,4 +195,3 @@ void Partida::Jugar(){
 	}
 	
 }
-
