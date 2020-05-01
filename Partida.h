@@ -14,8 +14,8 @@ class Partida{
 		FantasmaNaranja fantasmaNaranja;
 		FantasmaCian fantasmaCian;
 		
-		void Partida(Mapa mapa);
-		Mapa LeerMapa(); //Por si se desea consultar el mapa desde fuera del objeto, aunque en principio no es necesario
+		void Partida(Nivel nivel);
+		Nivel LeerNivel(); //Por si se desea consultar el nivel desde fuera del objeto, aunque en principio no es necesario
 		bool LeerVictoria(); //Puede que no sea necesario
 		void ActualizarVictoria();
 		void ActualizarEnCurso();
@@ -26,7 +26,7 @@ class Partida{
 		
 	private:
 		
-		Mapa mapa;
+		Nivel nivel;
 		bool enCurso = true;
 		bool victoria = false;
 		bool huida = false;
@@ -35,45 +35,45 @@ class Partida{
 		
 };
 
-void Partida::Partida(Mapa mapa){
+void Partida::Partida(Nivel nivel){
 		
-		//Almacenamiento del mapa	
-		this->mapa = mapa;
+		//Almacenamiento del nivel	
+		this->nivel = nivel;
 		
 		//Inicializacion del objeto cocos
-		cocos.InicializarMapaDeCocos(mapa.distribCocos);
-		cocos.InicializarCocosRestantes(mapa.numCocos);
+		cocos.InicializarNivelDeCocos(nivel.distribCocos);
+		cocos.InicializarCocosRestantes(nivel.numCocos);
 		
 		//Inicializacion del objeto supercocos
-		supercocos.InicializarMapaDeCocos(mapa.distribSupercocos);
-		supercocos.InicializarCocosRestantes(mapa.numSupercocos);
+		supercocos.InicializarNivelDeCocos(nivel.distribSupercocos);
+		supercocos.InicializarCocosRestantes(nivel.numSupercocos);
 		
 		//Inicializacion del objeto comecocos
-		comecocos.InicializarCasillasHabitables(mapa.paredes, mapa.coorPuerta);
-		comecocos.InicializarCoor(mapa.coorIniComecocos);
-		comecocos.InicializarDir(mapa.dirIniComecocos);
-		comecocos.InicializarVidas(mapa.vidasIni);
+		comecocos.InicializarCasillasHabitables(nivel.paredes, nivel.coorPuerta);
+		comecocos.InicializarCoor(nivel.coorIniComecocos);
+		comecocos.InicializarDir(nivel.dirIniComecocos);
+		comecocos.InicializarVidas(nivel.vidasIni);
 		
 		//Inicializacion del objeto fantasmaRojo
-		fantasmaRojo.InicializarCasillasHabitables(mapa.paredes);
-		fantasmaRojo.InicializarCoor(mapa.coorIniFantasmaRojo);
+		fantasmaRojo.InicializarCasillasHabitables(nivel.paredes);
+		fantasmaRojo.InicializarCoor(nivel.coorIniFantasmaRojo);
 		
 		//Inicializacion del objeto fantasmaRosa
-		fantasmaRosa.InicializarCasillasHabitables(mapa.paredes);
-		fantasmaRosa.InicializarCoor(mapa.coorIniFantasmaRosa);
+		fantasmaRosa.InicializarCasillasHabitables(nivel.paredes);
+		fantasmaRosa.InicializarCoor(nivel.coorIniFantasmaRosa);
 		
 		//Inicializacion del objeto fantasmaNaranja
-		fantasmaNaranja.InicializarCasillasHabitables(mapa.paredes);
-		fantasmaNaranja.InicializarCoor(mapa.coorIniFantasmaNaranja);
+		fantasmaNaranja.InicializarCasillasHabitables(nivel.paredes);
+		fantasmaNaranja.InicializarCoor(nivel.coorIniFantasmaNaranja);
 		
 		//Inicializacion del objeto fantasmaCian
-		fantasmaCian.InicializarCasillasHabitables(mapa.paredes);
-		fantasmaCian.InicializarCoor(mapa.coorIniFantasmaCian);
+		fantasmaCian.InicializarCasillasHabitables(nivel.paredes);
+		fantasmaCian.InicializarCoor(nivel.coorIniFantasmaCian);
 		
 }
 
-Mapa Partida::LeerMapa(){
-	return mapa;
+Nivel Partida::LeerNivel(){
+	return nivel;
 }
 
 bool Partida::LeerVictoria(){
@@ -91,7 +91,7 @@ bool Partida::LeerEnCurso(){
 }
 
 void Partida::ActualizarEnCurso(){
-	if(chrono::steady_clock::now() - tComienzoPartida > LeerMapa().duracionPartida
+	if(chrono::steady_clock::now() - tComienzoPartida > LeerNivel().duracionPartida
 	|| comecocos.LeerVidas() == 0
 	|| victoria)
 	{
@@ -100,7 +100,7 @@ void Partida::ActualizarEnCurso(){
 }
 
 void Partida::ActualizarHuida(){
-	if(chrono::steady_clock::now() - tComienzoHuida > LeerMapa().duracionHuida){
+	if(chrono::steady_clock::now() - tComienzoHuida > LeerNivel().duracionHuida){
 		huida = false;
 	}
 }
