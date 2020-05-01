@@ -14,6 +14,7 @@ public:
 
 class Mapa {	
 public:
+	
 	//Constructor por defecto (crea un mapa de 0s)
 	Mapa(){
 		w = 28;
@@ -30,8 +31,32 @@ public:
             for( int s = 0; s < w; s++ )
                 m[s][r] = semilla[r][s];
     }
+    
+    //Variables
     char m[28][31];
     int operator() (Coordenadas c) { return m[c.x][c.y]; }
     int w, h;
-	void Modificar(Coordenadas, char);
+    
+    //Metodos
+	void Modificar(Coordenadas c, char valor) { m[c.x][c.y] = valor; }
+	void Imprimir(){
+		Coordenadas posicionActual;
+		for( int y = 0; y < h; y++ ) {
+	        for( int x = 0; x < w; x++ ) {
+				posicionActual.x = x; posicionActual.y = y;
+				if(m(posicionActual) == 0) //Pasillo
+                	cout << " ";
+                else if(m(posicionActual) == 1) //Pared
+            		cout << char(0xdb);
+            	else if(m(posicionActual) == 2)	//Coco
+                	cout << "·";
+				else if(m(posicionActual) == 3) //Supercoco
+					cout << "O";
+	        	else if(m(posicionActual) == 4) //Puerta del refugio
+	        		cout << "#";
+	        	}
+	    	}
+			cout << "\n";
+		}
+	}
 };
