@@ -3,18 +3,18 @@
 #include <iostream>
 using namespace std;
 
-class point {
+class Coordenadas {
 public:
-    point( int a = 0, int b = 0 ) { x = a; y = b; } 
-    bool operator ==( const point& o ) { return o.x == x && o.y == y; }
-    point operator +( const point& o ) { return point( o.x + x, o.y + y ); }
+    Coordenadas( int a = 0, int b = 0 ) { x = a; y = b; } 
+    bool operator ==( const Coordenadas& c ) { return c.x == x && c.y == y; }
+    Coordenadas operator +( const Coordenadas& c ) { return Coordenadas( c.x + x, c.y + y ); }
     int x, y;
 };
 
 //Mapa para los fantasmas
-class map {	
+class Mapa {	
 public:
-    map() { 
+    Mapa() { 
         char t[29][26] = {	//0=Pasillo, 1=Pared
           //00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},//00
@@ -58,17 +58,17 @@ public:
             for( int s = 0; s < w; s++ )
                 m[s][r] = t[r][s];
     }
-    int operator() ( int x, int y ) { return m[x][y]; }
+    int operator() (Coordenadas c) { return m[c.x][c.y]; } //Creo que se le deberia pasar un objeto de tipo Coordenadas (antes llamado point) en vez de dos int
     char m[26][29];
     int w, h;
-	void ponepared (int,int);
-	void ponepasillo (int,int);
+	void PonerPared (Coordenadas c); //Aqui lo mismo, seria mejor pasarle un objeto Coordenadas
+	void PonerPasillo (Coordenadas c);
 };
 
 //Mapa para el jugador
-class mapajugador {	
+class MapaJugador {	
 public:
-    mapajugador() { 
+    MapaJugador() { 
         char t[29][26] = {	//0=Pasillo, 1=Pared, 2=Coco, 3=Supercoco
           //00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},//00
@@ -112,19 +112,19 @@ public:
             for( int s = 0; s < w; s++ )
                 m[s][r] = t[r][s];
     }
-    int operator() ( int x, int y ) { return m[x][y]; }
+    int operator() (Coordenadas c) { return m[c.x][c.y]; }
     char m[26][29];
     int w, h;
-	void ponepasillo (int,int);
+	void PonerPasillo (Coordenadas c);
 };
 
 
-class node {
+class Nodo {
 public:
-    bool operator == (const node& o ) { return pos == o.pos; }
-    bool operator == (const point& o ) { return pos == o; }
-    bool operator < (const node& o ) { return dist + cost < o.dist + o.cost; }
-    point pos, parent;
+    bool operator == (const Nodo& n ) { return pos == n.pos; }
+    bool operator == (const Coordenadas& c ) { return pos == c; }
+    bool operator < (const Nodo& n ) { return dist + cost < n.dist + n.cost; }
+    Coordenadas pos, parent;
     int dist, cost;
 };
 
@@ -132,30 +132,30 @@ public:
 class aStar {
 public:
     aStar() {
-        neighbours[0] = point( -1, -1 ); neighbours[1] = point(  1, -1 );
-        neighbours[2] = point( -1,  1 ); neighbours[3] = point(  1,  1 );
-        neighbours[4] = point(  0, -1 ); neighbours[5] = point( -1,  0 );
-        neighbours[6] = point(  0,  1 ); neighbours[7] = point(  1,  0 );
+        neighbours[0] = Coordenadas( -1, -1 ); neighbours[1] = Coordenadas(  1, -1 );
+        neighbours[2] = Coordenadas( -1,  1 ); neighbours[3] = Coordenadas(  1,  1 );
+        neighbours[4] = Coordenadas(  0, -1 ); neighbours[5] = Coordenadas( -1,  0 );
+        neighbours[6] = Coordenadas(  0,  1 ); neighbours[7] = Coordenadas(  1,  0 );
     }
  
-    int calcDist( point& p ){
+    int calcDist( Coordenadas& c ){
         // need a better heuristic
-        int x = end.x - p.x, y = end.y - p.y;
+        int x = end.x - c.x, y = end.y - c.y;
         return( x * x + y * y );
     }
  
-    bool isValid( point& p ) {
-        return ( p.x >-1 && p.y > -1 && p.x < m.w && p.y < m.h );
+    bool isValid( Coordenadas& c ) {
+        return ( c.x >-1 && c.y > -1 && c.x < m.w && c.y < m.h );
     }
  
-    bool existPoint( point& p, int cost ) {
-        list<node>::iterator i;
-        i = find( closed.begin(), closed.end(), p );
+    bool existPoint( Coordenadas& c, int cost ) {
+        list<Nodo>::iterator i;
+        i = find( closed.begin(), closed.end(), c );
         if( i != closed.end() ) {
             if( ( *i ).cost + ( *i ).dist < cost ) return true;
             else { closed.erase( i ); return false; }
         }
-        i = std::find( open.begin(), open.end(), p );
+        i = std::find( open.begin(), open.end(), c );
         if( i != open.end() ) {
             if( ( *i ).cost + ( *i ).dist < cost ) return true;
             else { open.erase( i ); return false; }
@@ -163,9 +163,9 @@ public:
         return false;
     }
  
-    bool fillOpen( node& n ) {
+    bool fillOpen( Nodo& n ) {
         int stepCost, nc, dist;
-        point neighbour;
+        Coordenadas neighbour;
  
         for( int x = 0; x < 8; x++ ) {
             // one can make diagonals have different cost
@@ -177,7 +177,7 @@ public:
                 nc = stepCost + n.cost;
                 dist = calcDist( neighbour );
                 if( !existPoint( neighbour, nc + dist ) ) {
-                    node m;
+                    Nodo m;
                     m.cost = nc; m.dist = dist;
                     m.pos = neighbour; 
                     m.parent = n.pos;
@@ -188,13 +188,13 @@ public:
         return false;
     }
  
-    bool search( point& s, point& e, map& mp ) {
-        node n; end = e; start = s; m = mp;
+    bool search( Coordenadas& s, Coordenadas& e, Mapa& mp ) {
+        Nodo n; end = e; start = s; m = mp;
         n.cost = 0; n.pos = s; n.parent = 0; n.dist = calcDist( s ); 
         open.push_back( n );
         while( !open.empty() ) {
             //open.sort();
-            node n = open.front();
+            Nodo n = open.front();
             open.pop_front();
             closed.push_back( n );
             if( fillOpen( n ) ) return true;
@@ -202,13 +202,13 @@ public:
         return false;
     }
  
-    int path( list<point>& path ) {
+    int path( list<Coordenadas>& path ) {
         path.push_front( end );
         int cost = 1 + closed.back().cost; 
         path.push_front( closed.back().pos );
-        point parent = closed.back().parent;
+        Coordenadas parent = closed.back().parent;
  
-        for( list<node>::reverse_iterator i = closed.rbegin(); i != closed.rend(); i++ ) {
+        for( list<Nodo>::reverse_iterator i = closed.rbegin(); i != closed.rend(); i++ ) {
             if( ( *i ).pos == parent && !( ( *i ).pos == start ) ) {
                 path.push_front( ( *i ).pos );
                 parent = ( *i ).parent;
@@ -217,45 +217,46 @@ public:
         path.push_front( start );
         return cost;
     }
-    map m; point end, start;
-    point neighbours[8];
-    list<node> open;
-    list<node> closed;
+    Mapa m; Coordenadas end, start;
+    Coordenadas neighbours[8];
+    list<Nodo> open;
+    list<Nodo> closed;
 };
 
-void map::ponepared (int x, int y){	//Funcion para cambiar coordenada a pared del mapa fantasmas
-	m[x][y]=1;
+void Mapa::PonerPared (Coordenadas c){	//Funcion para cambiar coordenada a pared del mapa fantasmas
+	m[c.x][c.y]=1;
 }
 
-void map::ponepasillo (int x, int y){	//Funcion para cambiar coordenada a pasillo del mapa fantasmas
-	m[x][y]=0;
+void Mapa::PonerPasillo (Coordenadas c){	//Funcion para cambiar coordenada a pasillo del mapa fantasmas
+	m[c.x][c.y]=0;
 }
 
-void mapajugador::ponepasillo (int x, int y){	//Funcion para cambiar coordenada a pasillo del mapa jugador
-	m[x][y]=0;
-}
+//Creo que no es necesario alterar el mapa del jugador una vez comienza la partida
+/*void MapaJugador::PonerPasillo (Coordenadas c){	//Funcion para cambiar coordenada a pasillo del mapa jugador
+	m[c.x][c.y]=0;
+}*/
 
 //Funcion para buscar la siguente posicion de los fantasmas
-point nextpos (point s,point e,map m){	//s=punto partida, e=punto destino, m=mapa fantasmas
+Coordenadas nextpos (Coordenadas s, Coordenadas e, Mapa m){	//s=punto partida, e=punto destino, m=mapa fantasmas
 	aStar as;
-	point pos0,pos1,pos2;
+	Coordenadas pos0,pos1,pos2;
 	int k=0;
 	if( as.search( s, e, m ) ) {
-        list<point> path;
+        list<Coordenadas> path;
         int c = as.path( path );
         /*for( int y = -1; y < 30; y++ ) {  //Bucle para mostrar por pantalla el camino del fantasma si fuera necesario
             for( int x = -1; x < 27; x++ ) {
                 if( x < 0 || y < 0 || x > 25 || y > 28 || m( x, y ) == 1 )
                     cout << char(0xdb);
                 else {
-                    if( find( path.begin(), path.end(), point( x, y ) )!= path.end() )
+                    if( find( path.begin(), path.end(), Coordenadas( x, y ) )!= path.end() )
                         cout << "X";
                     else cout << " ";
                 }
             }
             cout << "\n";
         }*/
-        for( list<point>::iterator i = path.begin(); i != path.end(); i++ ) {
+        for( list<Coordenadas>::iterator i = path.begin(); i != path.end(); i++ ) {
         	if (k==0){
         		pos0.x=( *i ).x;
         		pos0.y=( *i ).y;
@@ -277,7 +278,7 @@ point nextpos (point s,point e,map m){	//s=punto partida, e=punto destino, m=map
 };	
 
 //Funcion para mostrar por pantalla mapa jugador
-void visualizamapa (mapajugador m){
+void visualizamapa (MapaJugador m){
 	for( int y = -1; y < 30; y++ ) {
         for( int x = -1; x < 27; x++ ) {
             if( x < 0 || y < 0 || x > 25 || y > 28 || m( x, y ) == 1 ) //Pared
