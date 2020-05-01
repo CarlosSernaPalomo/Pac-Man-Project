@@ -278,9 +278,10 @@ Coordenadas SiguientePosicion (Coordenadas s,Coordenadas e,Mapa m){	//s=punto pa
 
 //Funcion para mostrar por pantalla mapa jugador
 void VisualizaMapa (MapaJugador m){
+	Coordenadas poscionActual;
 	for( int y = -1; y < 30; y++ ) {
         for( int x = -1; x < 27; x++ ) {
-        	Coordenadas poscionActual(x,y);
+			poscionActual.x=x;poscionActual.y=y;
             if( x < 0 || y < 0 || x > 25 || y > 28 || m(poscionActual) == 1 ) //Pared
                 cout << char(0xdb); 
             else{
