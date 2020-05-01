@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <iostream>
 using namespace std;
-
+//hola
 class point {
 public:
     point( int a = 0, int b = 0 ) { x = a; y = b; } 
