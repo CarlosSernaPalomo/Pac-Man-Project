@@ -1,10 +1,25 @@
 #include <chrono>
 using namespace std;
 
+class Nivel{
+	public:
+		const Mapa mapa;
+		char dirIniComecocos;
+		const Coordenadas coorIniComecocos;
+		const Cooordenadas coorIniFantasmaRojo;
+		const Coordenadas coorIniFantasmaRosa;
+		const Coordenadas coorIniFantasmaNaranja;
+		const Coordenadas coorIniFantasmaCian;
+		int vidasIni;
+		int duracionHuida;
+		int duracionPartida;
+}
+
 class Partida{
 	
 	public:
 		
+		Nivel nivel;
 		Cocos cocos;
 		Cocos supercocos;
 		Comecocos comecocos;
@@ -14,7 +29,6 @@ class Partida{
 		FantasmaCian fantasmaCian;
 		
 		void Partida(Nivel nivel);
-		Nivel LeerNivel(); //Por si se desea consultar el nivel desde fuera del objeto, aunque en principio no es necesario
 		bool LeerVictoria(); //Puede que no sea necesario
 		void ActualizarVictoria();
 		void ActualizarEnCurso();
@@ -25,7 +39,6 @@ class Partida{
 		
 	private:
 		
-		Nivel nivel;
 		bool enCurso = true;
 		bool victoria = false;
 		bool huida = false;
@@ -34,10 +47,10 @@ class Partida{
 		
 };
 
-void Partida::Partida(Nivel nivel){
+void Partida::Partida(Nivel n){
 		
 		//Almacenamiento del nivel	
-		this->nivel = nivel;
+		nivel = n;
 		
 		//Inicializacion del objeto cocos
 		cocos.InicializarNivelDeCocos(nivel.distribCocos);
