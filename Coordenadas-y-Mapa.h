@@ -16,13 +16,13 @@ class Mapa {
 public:
 	
 //Constructor por defecto (crea un mapa de 0s)
-	Mapa(){
-		w = 28;
-		h = 31;
-        for( int r = 0; r < h; r++ )
-            for( int s = 0; s < w; s++ )
-                m[s][r] = '0';
-    }
+Mapa(){
+w = 28;
+h = 31;
+for( int r = 0; r < h; r++ )
+for( int s = 0; s < w; s++ )
+m[s][r] = '0';
+}
     
     //Constructor a partir de semilla (crea un mapa a partir de un array bidimensional)
     Mapa(char semilla[31][28]) { 
