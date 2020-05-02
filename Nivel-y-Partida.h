@@ -4,7 +4,7 @@ using namespace std;
 class Nivel{
 	public:
 		const Mapa mapa;
-		char dirIniComecocos;
+		const char dirIniComecocos;
 		const Coordenadas coorIniComecocos;
 		const Cooordenadas coorIniFantasmaRojo;
 		const Coordenadas coorIniFantasmaRosa;
