@@ -23,6 +23,7 @@ public:
             for( int s = 0; s < w; s++ )
                 m[s][r] = '0';
     }
+    
     //Constructor a partir de semilla (crea un mapa a partir de un array bidimensional)
     Mapa(char semilla[31][28]) { 
         w = 28;
@@ -34,10 +35,10 @@ public:
     
     //Variables
     char m[28][31];
-    int operator() (Coordenadas c) { return m[c.x][c.y]; }
     int w, h;
     
     //Metodos
+    int operator() (Coordenadas c) { return m[c.x][c.y]; }
 	void Modificar(Coordenadas c, char valor) { m[c.x][c.y] = valor; }
 	void Imprimir(){
 		Coordenadas posicionActual;
