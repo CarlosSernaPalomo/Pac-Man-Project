@@ -31,7 +31,7 @@ public:
 		for( int r = 0; r < h; r++ )
 			for( int s = 0; s < w; s++ )
 				m[s][r] = semilla[r][s];
-    }
+	}
 	
 	//Variables
 	char m[28][31];
