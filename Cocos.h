@@ -13,7 +13,7 @@ class Cocos{
 void Cocos::InicializarMapaDeCocos(Mapa mapa){
 	for(int r = 0; r < mapa.h; r++){
 		for(int s = 0; s < m.w; s++){
-			if(mapa.m[s][r] == '2' || mapa.m[s][r] == '3') mapaDeCocos.m[s][r] = mapa.m[s][r];
+			if(mapa.m[s][r] == 2 || mapa.m[s][r] == 3) mapaDeCocos.m[s][r] = mapa.m[s][r];
 		}
 	}
 }
@@ -22,14 +22,17 @@ void Cocos::InicializarCocosRestantes(int n){
 	cocosRestantes = n;
 }
 
-void Cocos::LeerMapaDeCocos(Coordenadas c){
+int Cocos::LeerMapaDeCocos(Coordenadas c){
 	return mapaDeCocos(c);
 }
 
-void Cocos::LeerCocosRestantes(){
+int Cocos::LeerCocosRestantes(){
 	return cocosRestantes;
 }
 
 void Cocos::EliminarCoco(Coordenadas c){
-	if(mapaDeCocos(c) == 
+	if(mapaDeCocos(c) != 0){
+		mapaDeCocos.m[c.x][x.y] = 0;
+		cocosRestantes--;
+	}
 }
