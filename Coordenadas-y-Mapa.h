@@ -52,7 +52,7 @@ public:
 				else if(m[x][y] == 3) //Supercoco
 					cout << "O";
 	        	else if(m[x][y] == 4) //Puerta del refugio
-	        		cout << "#";
+	        		cout << char(176);
 	        	}
 	        cout << endl;
 	    	}
