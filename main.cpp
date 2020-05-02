@@ -41,11 +41,11 @@ int main(){
 		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},//29
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},//30
 	};
-	Mapa m(semilla);
+	Mapa map(semilla);
 	
 	//Creacion del nivel
 	Nivel nivel();
-	nivel.mapa = m;
+	nivel.mapa = map;
 	nivel.dirIniComecocos = 'd';
 	nivel.coorIniComecocos.x = 13; nivel.coorIniComecocos.y = 23;
 	nivel.coorIniFantasmaRojo.x = 13; nivel.coorIniFantasmaRojo.y = 8;
