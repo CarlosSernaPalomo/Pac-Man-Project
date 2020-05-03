@@ -12,7 +12,7 @@ class Cocos{
 
 void Cocos::InicializarMapaDeCocos(Mapa mapa){
 	for(int r = 0; r < mapa.h; r++){
-		for(int s = 0; s < m.w; s++){
+		for(int s = 0; s < mapa.w; s++){
 			if(mapa.m[s][r] == 2 || mapa.m[s][r] == 3) mapaDeCocos.m[s][r] = mapa.m[s][r];
 		}
 	}
