@@ -1,4 +1,8 @@
+#include <time.h>
+
 int main(){
+	
+	srand(time(NULL)); //Semilla que se usara para generar numeros aleatorios
 	
 	/*Creacion del mapa
 	Significado:
