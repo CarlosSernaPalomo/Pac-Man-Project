@@ -1,31 +1,30 @@
+#include <iostream>
+#include <ctype.h> //CARLOS: Para usar tolower
 //CARLOS: Estas librerias son para el metodo ActualizarDirDeseada que propongo
 #include <conio.h>
 #include <chrono>
+
 using namespace std;
 
-class Mapa{//Para que compile
-	int i;
-};
-
 class Ente{
-	protected://Las hago protected
-		bool** casillasHabitables;//Se podría hacer de int para no complicarse o justificar el bool con que pesa 8 bits frente a los 32 del int. CARLOS: Creo que es una buena justificacion.
-		const point coorIni;
-		point coorActuales;
+	protected:
+		Mapa casillasHabitables; //CARLOS: El mapa de casillas habitables contendra 1s (casillas no habitables) y 0s (casillas habitables)
+		const Coordenadas coorIni;
+		Coordenadas coorActuales;
 	public:
-			void InicializarCoor(point coorIni);
+			void InicializarCoor(Coordenadas coorIni);
 			void MoverACoorIni();
-			point LeerCoorActuales();	
+			Coordenadas LeerCoorActuales();	
 };
 
 class Comecocos:public Ente{
-	protected: //CARLOS: Yo lo pondria como private ya que ninguna clase va a heredar de esta
+	protected: //CARLOS: Se podria poner como private ya que ninguna clase va a heredar de esta. Asi demostramos que sabemos utilizar tanto public como private como protected
 		char dirActual;
 		char dirDeseada;
-		int vidas;//Se podría utilizar short int y en vez de 32 bits se utilizarían 16. CARLOS: Por mi vale.
+		int vidas; //Se podria utilizar short int y en vez de 32 bits se utilizarian 16. CARLOS: Por mi vale.
 	public:
-		void InicializarCasillasHabitables(bool** paredes, point coorPuerta);
-		void InicializarDir(char dirIniComecocos);
+		void InicializarCasillasHabitables(Mapa mapa);
+		void InicializarDir(char dirIni);
 		void InicializarVidas(int vidasIni);
 		int LeerVidas();
 		void PerderVida();
@@ -35,57 +34,65 @@ class Comecocos:public Ente{
 
 class Fantasma:public Ente{
 	public:
-		void InicializarCasillasHabitables(bool** paredes);
-		//void ActualizarCasillasHabitables(point coorActualesComecocos); //Como Ivan ha creado una clase Mapa con metodos para modificarlo, este metodo ya no es necesario
-		void Moverse(bool huida, point coorActualesComecocos);
-		void Perseguir(point coorActualesComecocos);
-		void CortarElPaso(point coorActualesComecocos);
+		char direccion = 'w'; //Solo es utilizada por el metodo Deambular
+		void InicializarCasillasHabitables(Mapa mapa);
+		void Cazar(Coordenadas coorActualesComecocos);
+		void Emboscar(Coordenadas coorActualesComecocos, char dirActualComecocos);
 		void Deambular();
 		void Huir();
-		void AEstrella();
 }
 
 class FantasmaRojo:public Fantasma{
 	public:
-		void Moverse(bool huida, point coorActualesComecocos);
+		void Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos);
 };
 
 class FantasmaRosa:public Fantasma{
 	public:
-		void Moverse(bool huida, point coorActualesComecocos);
+		void Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos);
 };
 
 class FantasmaNaranja:public Fantasma{
 	public:
-		void Moverse(bool huida, point coorActualesComecocos);
+		void Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos);
 };
 
 class FantasmaCian:public Fantasma{
 	public:
-		void Moverse(bool huida, point coorActualesComecocos);
+		void Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos);
 };
 
 //Metodos de Ente
-void Ente::InicializarCoor(point coorIni){
-	this->coorIni=coorIni;
+
+void Ente::InicializarCoor(Coordenadas c){
+	coorIni = c;
 }
 
 void Ente::MoverACoorIni(){
 	coorActuales=coorIni;
 }
 
-point Ente::LeerCoorActuales(){
+Coordenadas Ente::LeerCoorActuales(){
 	return coorActuales;
 }
 
-//Métodos de Comecocos
-void Comecocos::InicializarCasillasHabitables(bool** paredes, point coorPuerta){
-	casillasHabitables = paredes; //CARLOS: Viendo el codigo de Ivan creo que lo mas comodo es codificar las casillas habitables como 0s y las no habitables como 1s para que asi coincida con el mapa original (los 0s son pasillos y los 1s paredes)	
-	castillasHabitables(coorPuerta) = 1; //La puerta no es habitable para Pac-Man
+//Metodos de Comecocos
+
+void Comecocos::InicializarCasillasHabitables(Mapa mapa){
+	for(int r = 0; r < mapa.h; r++){
+		for(int s = 0; s < mapa.w; s++){
+			if(mapa.m[s][r] == 1 || mapa.m[s][r] == 4) mapaDeCocos.m[s][r] = 1; //Solo meto los 1s porque se supone (si no me he equivocado al programar) que el mapa esta inicializado con 0s
+		}
+	}
+}
+
+void InicializarDir(char dirIni){
+	dirActual = dirIni;
+	dirDeseada = dirIni;
 }
 
 void Comecocos::InicializarVidas(int vidasIni){
-	
+	vidas = vidasIni;
 }
 
 int Comecocos::LeerVidas(){
@@ -93,7 +100,7 @@ int Comecocos::LeerVidas(){
 }
 
 void Comecocos::PerderVida(){
-	vidas=vidas-1;
+	vidas = vidas - 1;
 	return;
 }
 
@@ -117,33 +124,135 @@ void Comecocos::PerderVida(){
 	}
 }*/
 
-//CARLOS: Propongo el siguiente metodo para leer el teclado. Creo que es mas realista ya que es "en tiempo real", no hay que esperar a que se pulse una tecla ni a que esta sea valida
 void Comecocos::ActualizarDirDeseada(){
 	auto start = chrono::steady_clock::now();
-	while(chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() < 1){
+	while(chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() < 0.2){
 		if(kbhit()){ //Se ha pulsado una tecla
 			char input = getch(); //Se recoge la tecla pulsada
 			if(input == 'w' || input == 'a' || input == 's' || input == 'd' || input == 'W' || input == 'A' || input == 'S' || input == 'D'){ //Se comprueba si es valida
-				dirDeseada = input;
+				dirDeseada = tolower(input); //Se pasa a minuscula y asi ya luego no nos tenemos que preocupar de contemplar ambos casos
 			}
 		}
 	}
 }
 
-//Métodos de Fantasma
-void Fantasma::InicializarCasillasHabitables(bool** paredes){
-	casillasHabitables = !paredes;
+void Comecocos::Moverse(){
+	
 }
 
-//CARLOS: El siguiente metodo se utiliza para hacer la casilla donde esta Pac-Man no habitable o habitable segun corresponda
-/*void Fantasma::ActualizarCasillasHabitables(point coorActualesComecocos, bool valor){
-	casillasHabitables(coorActualesComecocos) = valor;
-}*/
+//Metodos de Fantasma
 
-//CARLOS: Faltan Perseguir, CortarElPaso, Deambular, Huir, AEstrella
+void Fantasma::InicializarCasillasHabitables(Mapa mapa){
+	for(int r = 0; r < mapa.h; r++){
+		for(int s = 0; s < mapa.w; s++){
+			if(mapa.m[s][r] == 1) mapaDeCocos.m[s][r] = 1;
+		}
+	}
+}
+
+void Fantasma::Cazar(Coordenadas coorActualesComecocos){
+	coorActuales = SiguientePosicion(coorActuales, coorActualesComecocos, casillasHabitables);
+}
+
+void Fantasma::Emboscar(Coordenadas coorActualesComecocos, char dirActualComecocos){
+	Coordenadas objetivo = coorActualesComecocos; //El objetivo es la casilla justo detras de Pac-Man. Esta garantizado que esta casilla es habitable ya que Pac-Man acaba de estar en ella
+	switch(dirActualComecocos){
+		case 'w':
+			objetivo.y++; //El origen de coordenadas esta arriba a la izquierda, asi que para elegir la casilla justo debajo de Pac-Man hay que incrementar y
+		case 's':
+			objetivo.y--;
+		case 'a':
+			objetivo.x++;
+		case 'd':
+			objetivo.x--;
+	}
+	casillasHabitables.Modificar(coorActualesComecocos, 1); //Se hace a la casilla donde esta Pac-Man no habitable para el fantasma
+	coorActuales = SiguientePosicion(coorActuales, objetivo, casillasHabitables);
+	casillasHabitables.Modificar(coorActualesComecocos, 0); //Se vuelve a marcar la casilla donde esta Pac-Man como habitable
+}
+
+void Fantasma::Deambular(){
+	while(true){
+		Coordenadas coorNuevas = coorActuales;
+		switch(direccion){
+			case 'w':
+				coorNuevas.y++;
+			case 's':
+				coorNuevas.y--;
+			case 'a':
+				coorNuevas.x++;
+			case 'd':
+				coorNuevas.x--;
+	 	}
+		if(casillasHabitables(coorNuevas) == 0){ //Si las nuevas coordenadas son habitables, pasan a ser las coordenadas actuales y termina el bucle
+			coorActuales = coorNuevas;
+			break;
+		}else{ //Si no lo son, se escoge aleatoriamente una nueva direccion
+			int n = rand()%4;
+			switch(n){
+				case 0:
+					direccion = 'w';
+				case 1:
+					direccion = 's';
+				case 2:
+					direccion = 'a';
+				case 3:
+					direccion = 'd';
+			}
+		}
+	}
+}
+
+void Fantasma::Huir(){
+	casillasHabitables.Modificar(coorActualesComecocos, 1); //Hay que hacer la casilla en la que esta Pac-Man no habitable, ya que la huida debe realizarse evitando a Pac-Man
+	coorActuales = SiguientePosicion(coorActuales, coorIni, casillasHabitables);
+	casillasHabitables.Modificar(coorActualesComecocos, 0); //Se vuelve a marcar la casilla donde esta Pac-Man como habitable
+}
 
 //Métodos de FantasmaRojo
+
+void FantasmaRojo::Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos){
+	if(huida) Huir();
+	else Cazar(coorActualesComecocos);
+}
+
 //Métodos de FantasmaRosa
+
+void FantasmaRosa::Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos){
+	if(huida) Huir();
+	else Emboscar(coorActualesComecocos, dirActualComecocos);
+}
+
 //Métodos de FantasmaNaranja
+
+void FantasmaNaranja::Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos){
+	if(huida) Huir();
+	else{
+		x = coorActualesComecocos.x - coorActuales.x;
+		y = coorActualesComecocos.y - coorActuales.y;
+		dist = x*x + y*y;
+		if(dist < 100) Cazar(coorActualesComecocos);
+		else Deambular();
+	}
+}
+
 //Métodos de FantasmaCian
 
+void FantasmaCian::Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos){
+	if(huida) Huir();
+	else{
+		int n = rand()%3;
+		switch(n){
+			case 0: //Comportamiento de fantasmaRojo
+				Cazar(coorActualesComecocos);
+			case 1: //Comportamiento de fantasmaRosa
+				Emboscar(coorActualesComecocos, dirActualComecocos);
+			case 2: //Comportamiento de fantasmaNaranja
+				x = coorActualesComecocos.x - coorActuales.x;
+			y = coorActualesComecocos.y - coorActuales.y;
+			dist = x*x + y*y;
+			if(dist < 100) Cazar(coorActualesComecocos);
+			else Deambular();
+		}
+	}
+}
