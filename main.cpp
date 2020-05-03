@@ -55,8 +55,8 @@ int main(){
 	nivel.coorIniComecocos.x = 13; nivel.coorIniComecocos.y = 23;
 	nivel.coorIniFantasmaRojo.x = 13; nivel.coorIniFantasmaRojo.y = 8;
 	nivel.coorIniFantasmaRosa.x = 11; nivel.coorIniFantasmaRosa.y = 13;
-	nivel.coorIniFantasmaNaranja.x = 16; nivel.coorIniFantasmaNaranja.y = 13;
-	nivel.coorIniFantasmaCian.x = 13; nivel.coorIniFantasmaCian.y = 15;
+	nivel.coorIniFantasmaNaranja.x = 13; nivel.coorIniFantasmaNaranja.y = 15;
+	nivel.coorIniFantasmaCian.x = 16; nivel.coorIniFantasmaCian.y = 13;
 	nivel.vidasIni = 3;
 	nivel.duracionHuida = 10;
 	nivel.duracionPartida = 300;
