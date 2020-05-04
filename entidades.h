@@ -160,10 +160,13 @@ void Fantasma::Emboscar(Coordenadas coorActualesComecocos, char dirActualComecoc
 	switch(dirActualComecocos){
 		case 'w':
 			objetivo.y++; //El origen de coordenadas esta arriba a la izquierda, asi que para elegir la casilla justo debajo de Pac-Man hay que incrementar y
+			break;
 		case 's':
 			objetivo.y--;
+			break;
 		case 'a':
 			objetivo.x++;
+			break;
 		case 'd':
 			objetivo.x--;
 	}
@@ -178,10 +181,13 @@ void Fantasma::Deambular(){
 		switch(direccion){
 			case 'w':
 				coorNuevas.y++;
+				break;
 			case 's':
 				coorNuevas.y--;
+				break;
 			case 'a':
 				coorNuevas.x++;
+				break;
 			case 'd':
 				coorNuevas.x--;
 	 	}
@@ -193,10 +199,13 @@ void Fantasma::Deambular(){
 			switch(n){
 				case 0:
 					direccion = 'w';
+					break;
 				case 1:
 					direccion = 's';
+					break;
 				case 2:
 					direccion = 'a';
+					break;
 				case 3:
 					direccion = 'd';
 			}
