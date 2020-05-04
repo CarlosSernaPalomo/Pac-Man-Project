@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h> //CARLOS: para usar abs
 #include <ctype.h> //CARLOS: Para usar tolower
 //CARLOS: Estas librerias son para el metodo ActualizarDirDeseada que propongo
 #include <conio.h>
@@ -250,7 +251,7 @@ void FantasmaCian::Moverse(bool huida, Coordenadas coorActualesComecocos, char d
 			case 2: //Comportamiento de fantasmaNaranja
 				x = coorActualesComecocos.x - coorActuales.x;
 			y = coorActualesComecocos.y - coorActuales.y;
-			dist = x*x + y*y;
+			dist = abs(x) + abs(y);
 			if(dist < 100) Cazar(coorActualesComecocos);
 			else Deambular();
 		}
