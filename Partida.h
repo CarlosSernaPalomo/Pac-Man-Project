@@ -136,7 +136,10 @@ void Partida::SiguientePosicion (Fantasma& f){
 	Coordenadas s,e;
 	s=f.Actuales;
 	Mapa m=Mapafantasmas;
-	if (huida==true) e=f.Iniciales;
+	if (huida==true){
+		e=f.Iniciales;
+		m.PonerPasillo(Jugador.Actuales);
+	}
 	else e=Jugador.Actuales;
 		
 	Coordenadas pos0,pos1,pos2,test;
