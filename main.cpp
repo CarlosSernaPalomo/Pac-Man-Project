@@ -1,11 +1,16 @@
-#include <cstdlib>
-#include <time.h>
+//Librerias
+#include "librerias.h"
+
+//Archivos de cabecera
+#include "Partida.h"
+
+using namespace std;
 
 int main(){
 	
 	srand(time(NULL)); //Semilla que se usara para generar numeros aleatorios
 	
-	/*Creacion del mapa
+	/*Creacion del mapa (un mapa puede usarse para crear tantos niveles como se desee)
 	Significado:
 	- 0: casilla libre
 	- 1: pared
@@ -47,22 +52,32 @@ int main(){
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},//30
 	};
 	Mapa map(semilla);
+	cout << endl << "Mapa creado!" << endl << endl;
+	map.Imprimir();
 	
-	//Creacion del nivel
-	Nivel nivel();
+	//Creacion del nivel (un nivel puede usarse para jugar tantas partidas como se desee)
+	Nivel nivel;
 	nivel.mapa = map;
 	nivel.dirIniComecocos = 'd';
 	nivel.coorIniComecocos.x = 13; nivel.coorIniComecocos.y = 23;
-	nivel.coorIniFantasmaRojo.x = 13; nivel.coorIniFantasmaRojo.y = 8;
+	nivel.coorIniFantasmaRojo.x = 14; nivel.coorIniFantasmaRojo.y = 11;
 	nivel.coorIniFantasmaRosa.x = 11; nivel.coorIniFantasmaRosa.y = 13;
 	nivel.coorIniFantasmaNaranja.x = 13; nivel.coorIniFantasmaNaranja.y = 15;
 	nivel.coorIniFantasmaCian.x = 16; nivel.coorIniFantasmaCian.y = 13;
 	nivel.vidasIni = 3;
-	nivel.duracionHuida = 10;
-	nivel.duracionPartida = 300;
+	nivel.duracionHuida = 10; //En segundos
+	nivel.duracionPartida = 300; //En segundos
+	nivel.periodo = 500; //Milisegundos entre movimientos consecutivos
+	cout << endl << "Nivel creado!" << endl;
+	cout << "- Vidas: " << nivel.vidasIni << endl;
+	cout << "- Duracion de la invencibilidad: " << nivel.duracionHuida << endl;
+	cout << "- Duracion de la partida: " << nivel.duracionPartida << endl;
+	cout << "- Tiempo entre movimientos: " << nivel.periodo << endl;
 	
 	//Creacion de la partida
 	Partida partida(nivel);
+	cout << endl << "Partida creada!" << endl;
+	partida.Imprimir();
 	
 	//Jugar
 	partida.Jugar();
