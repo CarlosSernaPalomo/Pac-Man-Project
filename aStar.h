@@ -85,7 +85,6 @@ bool aStar::search(Coordenadas& s, Coordenadas& e, Mapa& mp){
     n.cost = 0; n.pos = s; n.parent = 0; n.dist = calcDist( s ); 
     open.push_back( n );
     while( !open.empty() ) {
-        //open.sort();
         Nodo n = open.front();
         open.pop_front();
         closed.push_back( n );

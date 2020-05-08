@@ -49,13 +49,8 @@ Partida::Partida(Nivel nivel){
 	duracionHuida = nivel.duracionHuida;
 	
 	//cocosRestantes
-	for(int r = 0; r < mapa.h; r++){
-		for(int s = 0; s < mapa.w; s++){
-			if(mapa.m[s][r] == 2 || mapa.m[s][r] == 3){
-				cocosRestantes++;
-			}
-		}
-	}
+	for(int r = 0; r < mapa.h; r++) for(int s = 0; s < mapa.w; s++)
+		if(mapa.m[s][r] == 2 || mapa.m[s][r] == 3) cocosRestantes++;
 	
 	//comecocos
 	comecocos.InicializarCasillasHabitables(nivel.mapa);
@@ -193,24 +188,23 @@ void Partida::Jugar(){
 		comecocos.Moverse(); //Aqui se comprueba si es posible moverse en la direccion deseada y, si es posible, se hace; si no, se mantiene la direccion actual
 		
 		/*Movimiento de los fantasmas:
-		el metodo Moverse determina primero el objetivo, luego llama al algoritmo A*
-		(que determina el camino optimo hasta las coordenadas deseadas y, sabiendo el camino,
+		El metodo Moverse determina primero el objetivo, luego llama a un metodo SiguientePosicion
+		(que determina, utilizando A*, el camino optimo hasta el objetivo y, sabiendo el camino,
 		determina a que casilla se tiene que mover el fantasma) y finalmente mueve el fantasma*/
 		fantasmaRojo.Moverse(huida, comecocos.LeerCoorActuales(), comecocos.LeerDirActual());
 		fantasmaRosa.Moverse(huida, comecocos.LeerCoorActuales(), comecocos.LeerDirActual());
 		fantasmaNaranja.Moverse(huida, comecocos.LeerCoorActuales(), comecocos.LeerDirActual());
 		fantasmaCian.Moverse(huida, comecocos.LeerCoorActuales(), comecocos.LeerDirActual());
-		/*Sobre el objetivo de cada fantasma:
+		/*Objetivo de cada fantasma:
+			Si estan huyendo, el objetivo de todos ellos es entrar en el refugio.
 			Si no estan huyendo:
-				- Para el fantasmaRojo el objetivo seran las coordenadas de Pac-Man.
-				- El fantasmaRosa hay que ver como lo hacemos pero quiza lo mas sencillo seria que sus coordenadas deseadas fueran
-				  la casilla que Pac-Man tiene justo en frente, siendo Pac-Man para este fantasma una casilla no habitable.
+				- Para el fantasmaRojo, el objetivo son las coordenadas de Pac-Man.
+				- Para el fantasmaRosa, el objetivo es la casilla justo detras de Pac-Man.
 				- Respecto al fantasmaNaranja, si Pac-Man esta cerca (a menos de diez casillas en distancia de Manhattan) el objetivo seran
-				  las coordenadas de Pac-Man; si no, se mueve en una direccion aleatoria hasta toparse con un muro y asi sucesivamente.
-				- El fantasmaCian utilizara aleatoriamente una de las tres estrategias anteriores.
-			Si estan huyendo, el objetivo de todos ellos es entrar en el refugio.*/
+				  las coordenadas de Pac-Man; si no, se mueve aleatoriamente.
+				- El fantasmaCian utilizara aleatoriamente una de las tres estrategias anteriores.*/
 		
-		//Se comprueba si alguien se ha comido algo y se ejecutan las acciones correspondientes
+		//Se comprueba si algun ente se ha comido algo y se ejecutan las acciones correspondientes
 		Comer();
 		
 		//Se comprueba la condicion de victoria
@@ -222,7 +216,7 @@ void Partida::Jugar(){
 		//Se comprueba si ha finalizado la huida en caso de que este activada
 		ActualizarHuida();
 		
-		//Actualizar interfaz grafica
+		//Se actualiza la interfaz grafica
 		Imprimir();
 		
 	} //Fin del bucle
