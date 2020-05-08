@@ -152,9 +152,9 @@ void Partida::Comer(){
 void Partida::Imprimir(){
 	HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); //Para impresion en color
 	SetConsoleTextAttribute(color, 15);
-	cout << "VIDAS: " << comecocos.LeerVidas() << "        " << "PUNTUACI" << char(224) << "N: " << puntuacion << endl;
-	cout << "Tiempo restante: " << duracionPartida - chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoPartida).count();
-	cout << endl << endl;
+	cout << "VIDAS: " << comecocos.LeerVidas() << "     " << "PUNTUACI" << char(224) << "N: " << puntuacion << endl;
+	cout << "TIEMPO RESTANTE: " << duracionPartida - chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoPartida).count();
+	cout << endl;
 	Coordenadas c;
 	for(int y = 0; y < mapa.h; y++) {
 		for(int x = 0; x < mapa.w; x++){
@@ -265,11 +265,11 @@ void Partida::Jugar(){
 		cout << char(173) << "HAS GANADO!" << endl;
 	}else{
 		cout << char(173) << "HAS PERDIDO!" << endl;
-		if(comecocos.LeerVidas() == 0) cout << "Te quedaste sin vidas." << endl;
-		else cout << "Te quedaste sin tiempo." << endl;
+		if(comecocos.LeerVidas() == 0) cout << "Te has quedado sin vidas." << endl;
+		else cout << "Te has quedado sin tiempo." << endl;
 	}
-	cout << endl << char(173) << "Gracias por jugar!" << endl;
-	
+	cout << endl << char(173) << "Gracias por jugar! Pulsa cualquier tecla para salir." << endl;
+	while(!kbhit());
 }
 
 #endif
