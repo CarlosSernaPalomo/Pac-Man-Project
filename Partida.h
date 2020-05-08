@@ -143,35 +143,64 @@ void Partida::Comer(){
 }
 
 void Partida::Imprimir(){
+	HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); //Para impresion en color
 	Coordenadas c;
 	for(int y = 0; y < mapa.h; y++) {
-        for(int x = 0; x < mapa.w; x++){
-        	c.x = x; c.y = y;
-			if(c == comecocos.LeerCoorActuales()) //comecocos
+		for(int x = 0; x < mapa.w; x++){
+			c.x = x; c.y = y;
+			if(c == comecocos.LeerCoorActuales()){ //comecocos
+				SetConsoleTextAttribute(color, 14);
 				cout << "C";
-			else if(c == fantasmaRojo.LeerCoorActuales()) //fantasmaRojo
-				if(huida) cout << "M";
-				else cout << "F";
-			else if(c == fantasmaRosa.LeerCoorActuales()) //fantasmaRosa
-				if(huida) cout << "M";
-				else cout << "f";
-			else if(c == fantasmaNaranja.LeerCoorActuales()) //fantasmaNaranja
-				if(huida) cout << "M";
-				else cout << char(159);
-			else if(c == fantasmaCian.LeerCoorActuales()) //fantasmaCian
-				if(huida) cout << "M";
-				else cout << char(156);
-            else if(mapa(c) == 0) //Pasillo
-                cout << " ";
-            else if(mapa(c) == 1) //Pared
-                cout << char(0xdb);
-            else if(mapa(c) == 2) //Coco
-                cout << char(250);
-			else if(mapa(c) == 3) //Supercoco
+			}else if(c == fantasmaRojo.LeerCoorActuales()){ //fantasmaRojo
+				if(huida){
+					SetConsoleTextAttribute(color, 9);
+					cout << "M";
+				}else{
+					SetConsoleTextAttribute(color, 12);
+					cout << "M";
+				}
+			}else if(c == fantasmaRosa.LeerCoorActuales()){ //fantasmaRosa
+				if(huida){
+					SetConsoleTextAttribute(color, 9);
+					cout << "M";
+				}else{
+					SetConsoleTextAttribute(color, 13);
+					cout << "M";
+				}
+			}else if(c == fantasmaNaranja.LeerCoorActuales()){ //fantasmaNaranja
+				if(huida){
+					SetConsoleTextAttribute(color, 9);
+					cout << "M";
+				}else{
+					SetConsoleTextAttribute(color, 6);
+					cout << "M";
+				}
+			}else if(c == fantasmaCian.LeerCoorActuales()){ //fantasmaCian
+				if(huida){
+					SetConsoleTextAttribute(color, 9);
+					cout << "M";
+				}else{
+					SetConsoleTextAttribute(color, 11);
+					cout << "M";
+				}
+			}else if(mapa(c) == 0){ //Pasillo
+				SetConsoleTextAttribute(color, 0);
+				cout << " ";
+			}else if(mapa(c) == 1){ //Pared
+				SetConsoleTextAttribute(color, 9);
+				cout << char(0xdb);
+			}else if(mapa(c) == 2){ //Coco
+				SetConsoleTextAttribute(color, 14);
+				cout << char(250);
+			}else if(mapa(c) == 3){ //Supercoco
+				SetConsoleTextAttribute(color, 14);
 				cout << "O";
-			else if(mapa(c) == 4) //Puerta del refugio
+			}else if(mapa(c) == 4){ //Puerta del refugio
+				SetConsoleTextAttribute(color, 9);
 				cout << char(176);
-    	}
+			}
+		}
+		SetConsoleTextAttribute(color, 15);
 		cout << endl;	
 	}
 	cout << endl;
