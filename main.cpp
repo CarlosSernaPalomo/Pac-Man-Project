@@ -8,7 +8,7 @@ using namespace std;
 
 int main(){
 	
-	srand(time(NULL)); //Semilla que se usara para generar numeros aleatorios
+	srand(time(NULL)); //Semilla para generar numeros aleatorios
 	
 	HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); //Para impresion en color
 	SetConsoleTextAttribute(color, 14); //Amarillo
@@ -27,7 +27,7 @@ int main(){
 	cout << endl << "PULSA CUALQUIER TECLA PARA JUGAR" << endl << endl;
 	while(!kbhit());
 	
-	/*Creacion del mapa (un mapa puede usarse para crear tantos niveles como se desee)
+	/*Creacion del mapa
 	Significado:
 	- 0: casilla libre
 	- 1: pared
@@ -68,11 +68,11 @@ int main(){
 		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},//29
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},//30
 	};
-	Mapa map(semilla);
+	Mapa mapaClasico(semilla);
 	
-	//Creacion del nivel (un nivel puede usarse para jugar tantas partidas como se desee)
+	//Se crean 3 niveles: uno facil, otro normal y otro dificil
 	Nivel nivelFacil;
-	nivelFacil.mapa = map;
+	nivelFacil.mapa = mapaClasico;
 	nivelFacil.dirIniComecocos = 'd';
 	nivelFacil.coorIniComecocos.x = 13; nivelFacil.coorIniComecocos.y = 23;
 	nivelFacil.coorIniFantasmaRojo.x = 14; nivelFacil.coorIniFantasmaRojo.y = 11;

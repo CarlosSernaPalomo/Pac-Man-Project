@@ -144,6 +144,10 @@ void Partida::Comer(){
 
 void Partida::Imprimir(){
 	HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); //Para impresion en color
+	SetConsoleTextAttribute(color, 15);
+	cout << "VIDAS: " << comecocos.LeerVidas() << "        " << "PUNTOS: " << endl;
+	cout << "Tiempo restante: " << duracionPartida - chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoPartida).count();
+	cout << endl << endl;
 	Coordenadas c;
 	for(int y = 0; y < mapa.h; y++) {
 		for(int x = 0; x < mapa.w; x++){
@@ -200,10 +204,10 @@ void Partida::Imprimir(){
 				cout << char(176);
 			}
 		}
-		SetConsoleTextAttribute(color, 15);
 		cout << endl;	
 	}
-	cout << endl;
+	cout << endl << endl;
+	SetConsoleTextAttribute(color, 15);
 }
 
 void Partida::Jugar(){
