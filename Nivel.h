@@ -5,7 +5,7 @@
 #include "librerias.h"
 
 //Archivos de cabecera
-#include "Entes.h"
+#include "Mapa.h"
 
 using namespace std;
 

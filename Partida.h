@@ -6,6 +6,11 @@
 
 //Archivos de cabecera
 #include "Nivel.h"
+#include "Comecocos.h"
+#include "FantasmaRojo.h"
+#include "FantasmaRosa.h"
+#include "FantasmaNaranja.h"
+#include "FantasmaCian.h"
 
 using namespace std;
 
