@@ -208,7 +208,7 @@ void Partida::Imprimir(){
 
 void Partida::Jugar(){
 	
-	cout << "Comienza la partida!" << endl << endl;
+	cout << char(173) << "Comienza la partida!" << endl << endl;
 	
 	while(enCurso){
 		
@@ -251,13 +251,14 @@ void Partida::Jugar(){
 	} //Fin del bucle
 	
 	if(victoria){
-		cout << "Has ganado!" << endl;
+		cout << char(173) << "HAS GANADO!" << endl;
 		//Se calcula la puntuacion obtenida y se muestra
 	}else{
-		cout << "Has perdido!" << endl;
-		if(comecocos.LeerVidas() == 0) cout << "Te quedaste sin vidas!" << endl;
-		else cout << "Te quedaste sin tiempo!" << endl;
+		cout << char(173) << "HAS PERDIDO!" << endl;
+		if(comecocos.LeerVidas() == 0) cout << "Te quedaste sin vidas." << endl;
+		else cout << "Te quedaste sin tiempo." << endl;
 	}
+	cout << endl << char(173) << "Gracias por jugar!" << endl;
 	
 }
 
