@@ -10,8 +10,10 @@
 using namespace std;
 
 class Fantasma:public Ente{
-	public:
+	protected:
 		char direccion = 'w'; //Solo es utilizada por el metodo Deambular
+		bool tocaHuir = true;
+	public:
 		void InicializarCasillasHabitables(Mapa mapa);
 		Coordenadas SiguientePosicion(Coordenadas s, Coordenadas e, Mapa m); //Utiliza aStar
 		void Cazar(Coordenadas coorActualesComecocos);
@@ -126,11 +128,15 @@ void Fantasma::Deambular(){
 }
 
 void Fantasma::Huir(Coordenadas coorActualesComecocos){
-	//Hay que hacer la casilla en la que esta Pac-Man no habitable, ya que la huida debe realizarse evitando a Pac-Man
-	casillasHabitables.Modificar(coorActualesComecocos, 1);
-	coorActuales = SiguientePosicion(coorActuales, coorIni, casillasHabitables);
-	//Se vuelve a marcar la casilla donde esta Pac-Man como habitable
-	casillasHabitables.Modificar(coorActualesComecocos, 0);
+	//Los fantasmas reducen su velocidad a la mitad cuando huyen
+	if(tocaHuir){
+		//Hay que hacer la casilla en la que esta Pac-Man no habitable, ya que la huida debe realizarse evitando a Pac-Man
+		casillasHabitables.Modificar(coorActualesComecocos, 1);
+		coorActuales = SiguientePosicion(coorActuales, coorIni, casillasHabitables);
+		//Se vuelve a marcar la casilla donde esta Pac-Man como habitable
+		casillasHabitables.Modificar(coorActualesComecocos, 0);
+		tocaHuir = false;
+	}else tocaHuir = true;
 }
 
 #endif

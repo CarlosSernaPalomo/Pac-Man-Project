@@ -38,6 +38,7 @@ class Partida{
 		chrono::steady_clock::time_point tComienzoPartida = chrono::steady_clock::now();
 		int duracionPartida;
 		int duracionHuida;
+		int puntuacion = 0;
 };
 
 Partida::Partida(Nivel nivel){
@@ -104,12 +105,14 @@ void Partida::Comer(){
 	if(mapa(comecocos.LeerCoorActuales()) == 2){
 		mapa.Modificar(comecocos.LeerCoorActuales(), 0);
 		cocosRestantes--;
+		puntuacion += 10; //Cada coco otorga 10 puntos
 	}
 	
 	//Se comprueba si el comecocos se ha comido un supercoco
 	else if(mapa(comecocos.LeerCoorActuales()) == 3){
 		mapa.Modificar(comecocos.LeerCoorActuales(), 0);
 		cocosRestantes--;
+		puntuacion += 50;
 		//Si se ha comido un supercoco, ademas de eliminarlo hay que activar la huida
 		huida = true;
 		tComienzoHuida = chrono::steady_clock::now();
@@ -119,12 +122,16 @@ void Partida::Comer(){
 	if(huida){
 		if(comecocos.LeerCoorActuales() == fantasmaRojo.LeerCoorActuales()){
 			fantasmaRojo.MoverACoorIni();
+			puntuacion += 200; //Comerse a un fantasma otorga 200 puntos
 		}else if(comecocos.LeerCoorActuales() == fantasmaRosa.LeerCoorActuales()){
 			fantasmaRosa.MoverACoorIni();
+			puntuacion += 200;
 		}else if(comecocos.LeerCoorActuales() == fantasmaNaranja.LeerCoorActuales()){
 			fantasmaNaranja.MoverACoorIni();
+			puntuacion += 200;
 		}else if(comecocos.LeerCoorActuales() == fantasmaCian.LeerCoorActuales()){
 			fantasmaCian.MoverACoorIni();
+			puntuacion += 200;
 		}
 		
 	//Si los fantasmas no estan huyendo, se pueden comer al comecocos
@@ -145,7 +152,7 @@ void Partida::Comer(){
 void Partida::Imprimir(){
 	HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); //Para impresion en color
 	SetConsoleTextAttribute(color, 15);
-	cout << "VIDAS: " << comecocos.LeerVidas() << "        " << "PUNTOS: " << endl;
+	cout << "VIDAS: " << comecocos.LeerVidas() << "        " << "PUNTUACI" << char(224) << "N: " << puntuacion << endl;
 	cout << "Tiempo restante: " << duracionPartida - chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoPartida).count();
 	cout << endl << endl;
 	Coordenadas c;
@@ -256,7 +263,6 @@ void Partida::Jugar(){
 	
 	if(victoria){
 		cout << char(173) << "HAS GANADO!" << endl;
-		//Se calcula la puntuacion obtenida y se muestra
 	}else{
 		cout << char(173) << "HAS PERDIDO!" << endl;
 		if(comecocos.LeerVidas() == 0) cout << "Te quedaste sin vidas." << endl;

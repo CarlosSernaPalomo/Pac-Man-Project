@@ -10,7 +10,7 @@
 using namespace std;
 
 class Comecocos:public Ente{
-	protected:
+	private:
 		char dirIni;
 		char dirActual;
 		char dirDeseada;
