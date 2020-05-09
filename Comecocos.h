@@ -10,11 +10,11 @@
 using namespace std;
 
 class Comecocos:public Ente{
-	protected:
+	private:
 		char dirIni;
 		char dirActual;
 		char dirDeseada;
-		int vidas; //Se podria utilizar short int y en vez de 32 bits se utilizarian 16. CARLOS: Por mi vale.
+		int vidas;
 		int periodo;
 	public:
 		void InicializarCasillasHabitables(Mapa mapa);
@@ -32,7 +32,7 @@ class Comecocos:public Ente{
 void Comecocos::InicializarCasillasHabitables(Mapa mapa){
 	for(int r = 0; r < mapa.h; r++){
 		for(int s = 0; s < mapa.w; s++){
-			if(mapa.m[s][r] == 1 || mapa.m[s][r] == 4) casillasHabitables.m[s][r] = 1; //Solo meto los 1s porque se supone (si no me he equivocado al programar) que el mapa esta inicializado con 0s
+			if(mapa.m[s][r] == 1 || mapa.m[s][r] == 4) casillasHabitables.m[s][r] = 1;
 		}
 	}
 }
@@ -69,8 +69,12 @@ void Comecocos::ActualizarDirDeseada(){
 	while(chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() < periodo){
 		if(kbhit()){ //Se ha pulsado una tecla
 			char input = getch(); //Se recoge la tecla pulsada
-			if(input == 'w' || input == 'a' || input == 's' || input == 'd' || input == 'W' || input == 'A' || input == 'S' || input == 'D'){ //Se comprueba si es valida
-				dirDeseada = tolower(input); //Se pasa a minuscula y asi ya luego no nos tenemos que preocupar de contemplar ambos casos
+			//Se comprueba si la tecla es valida
+			if(input == 'w' || input == 'W'
+			|| input == 'a' || input == 'A'
+			|| input == 's' || input == 'S'
+			|| input == 'd' || input == 'D'){
+				dirDeseada = tolower(input); //Se pasa a minuscula y asi ya no hay que preocuparse de contemplar ambos casos
 			}
 		}
 	}
@@ -86,7 +90,8 @@ void Comecocos::Moverse(){
 	//Se comprueba si se puede cambiar la direccion actual conforme a la deseada y si es asi se cambia
 	if(dirActual != dirDeseada){
 		Coordenadas c1 = coorActuales;
-		if(dirDeseada == 'w') c1.y--; //El origen de coordenadas esta arriba a la izquierda, asi que para elegir la casilla justo encima de Pac-Man hay que decrementar y
+		//El origen de coordenadas esta arriba a la izquierda, asi que para elegir la casilla justo encima de Pac-Man hay que decrementar y, y viceversa
+		if(dirDeseada == 'w') c1.y--;
 		else if(dirDeseada == 's') c1.y++;
 		else if(dirDeseada == 'a') c1.x--;
 		else if(dirDeseada == 'd') c1.x++;

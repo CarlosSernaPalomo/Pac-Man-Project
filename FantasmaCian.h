@@ -5,7 +5,7 @@
 #include "librerias.h"
 
 //Archivos de cabecera
-#include "aStar.h"
+#include "Fantasma.h"
 
 using namespace std;
 

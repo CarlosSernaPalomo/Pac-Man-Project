@@ -11,7 +11,7 @@ using namespace std;
 
 class Ente{
 	protected:
-		Mapa casillasHabitables; //CARLOS: El mapa de casillas habitables contendra 1s (casillas no habitables) y 0s (casillas habitables)
+		Mapa casillasHabitables; //El mapa de casillas habitables contendra 1s (casillas no habitables) y 0s (casillas habitables)
 		Coordenadas coorIni;
 		Coordenadas coorActuales;
 	public:

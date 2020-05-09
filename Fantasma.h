@@ -10,8 +10,10 @@
 using namespace std;
 
 class Fantasma:public Ente{
-	public:
+	protected:
 		char direccion = 'w'; //Solo es utilizada por el metodo Deambular
+		bool tocaHuir = true;
+	public:
 		void InicializarCasillasHabitables(Mapa mapa);
 		Coordenadas SiguientePosicion(Coordenadas s, Coordenadas e, Mapa m); //Utiliza aStar
 		void Cazar(Coordenadas coorActualesComecocos);
@@ -74,14 +76,17 @@ void Fantasma::Cazar(Coordenadas coorActualesComecocos){
 }
 
 void Fantasma::Emboscar(Coordenadas coorActualesComecocos, char dirActualComecocos){
-	Coordenadas objetivo = coorActualesComecocos; //El objetivo es la casilla justo detras de Pac-Man. Esta garantizado que esta casilla es habitable ya que Pac-Man acaba de estar en ella
+	//El objetivo es la casilla justo detras de Pac-Man. Esta garantizado que esta casilla es habitable ya que Pac-Man acaba de estar en ella
+	Coordenadas objetivo = coorActualesComecocos;
 	if(dirActualComecocos == 'w') objetivo.y++;
 	else if(dirActualComecocos == 's') objetivo.y--;
 	else if(dirActualComecocos == 'a') objetivo.x++;
 	else if(dirActualComecocos == 'd') objetivo.x--;
-	casillasHabitables.Modificar(coorActualesComecocos, 1); //Se hace a la casilla donde esta Pac-Man no habitable para el fantasma
+	//Se hace a la casilla donde esta Pac-Man no habitable para el fantasma. Esto es necesario para asegurar que el fantasma se acercara por la espalda
+	casillasHabitables.Modificar(coorActualesComecocos, 1);
 	coorActuales = SiguientePosicion(coorActuales, objetivo, casillasHabitables);
-	casillasHabitables.Modificar(coorActualesComecocos, 0); //Se vuelve a marcar la casilla donde esta Pac-Man como habitable
+	//Se vuelve a marcar la casilla donde esta Pac-Man como habitable
+	casillasHabitables.Modificar(coorActualesComecocos, 0);
 }
 
 void Fantasma::Deambular(){
@@ -123,9 +128,15 @@ void Fantasma::Deambular(){
 }
 
 void Fantasma::Huir(Coordenadas coorActualesComecocos){
-	casillasHabitables.Modificar(coorActualesComecocos, 1); //Hay que hacer la casilla en la que esta Pac-Man no habitable, ya que la huida debe realizarse evitando a Pac-Man
-	coorActuales = SiguientePosicion(coorActuales, coorIni, casillasHabitables);
-	casillasHabitables.Modificar(coorActualesComecocos, 0); //Se vuelve a marcar la casilla donde esta Pac-Man como habitable
+	//Los fantasmas reducen su velocidad a la mitad cuando huyen
+	if(tocaHuir){
+		//Hay que hacer la casilla en la que esta Pac-Man no habitable, ya que la huida debe realizarse evitando a Pac-Man
+		casillasHabitables.Modificar(coorActualesComecocos, 1);
+		coorActuales = SiguientePosicion(coorActuales, coorIni, casillasHabitables);
+		//Se vuelve a marcar la casilla donde esta Pac-Man como habitable
+		casillasHabitables.Modificar(coorActualesComecocos, 0);
+		tocaHuir = false;
+	}else tocaHuir = true;
 }
 
 #endif

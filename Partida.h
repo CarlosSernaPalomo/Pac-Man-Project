@@ -38,6 +38,7 @@ class Partida{
 		chrono::steady_clock::time_point tComienzoPartida = chrono::steady_clock::now();
 		int duracionPartida;
 		int duracionHuida;
+		int puntuacion = 0;
 };
 
 Partida::Partida(Nivel nivel){
@@ -49,13 +50,8 @@ Partida::Partida(Nivel nivel){
 	duracionHuida = nivel.duracionHuida;
 	
 	//cocosRestantes
-	for(int r = 0; r < mapa.h; r++){
-		for(int s = 0; s < mapa.w; s++){
-			if(mapa.m[s][r] == 2 || mapa.m[s][r] == 3){
-				cocosRestantes++;
-			}
-		}
-	}
+	for(int r = 0; r < mapa.h; r++) for(int s = 0; s < mapa.w; s++)
+		if(mapa.m[s][r] == 2 || mapa.m[s][r] == 3) cocosRestantes++;
 	
 	//comecocos
 	comecocos.InicializarCasillasHabitables(nivel.mapa);
@@ -109,12 +105,14 @@ void Partida::Comer(){
 	if(mapa(comecocos.LeerCoorActuales()) == 2){
 		mapa.Modificar(comecocos.LeerCoorActuales(), 0);
 		cocosRestantes--;
+		puntuacion += 10; //Cada coco otorga 10 puntos
 	}
 	
 	//Se comprueba si el comecocos se ha comido un supercoco
 	else if(mapa(comecocos.LeerCoorActuales()) == 3){
 		mapa.Modificar(comecocos.LeerCoorActuales(), 0);
 		cocosRestantes--;
+		puntuacion += 50;
 		//Si se ha comido un supercoco, ademas de eliminarlo hay que activar la huida
 		huida = true;
 		tComienzoHuida = chrono::steady_clock::now();
@@ -124,12 +122,16 @@ void Partida::Comer(){
 	if(huida){
 		if(comecocos.LeerCoorActuales() == fantasmaRojo.LeerCoorActuales()){
 			fantasmaRojo.MoverACoorIni();
+			puntuacion += 200; //Comerse a un fantasma otorga 200 puntos
 		}else if(comecocos.LeerCoorActuales() == fantasmaRosa.LeerCoorActuales()){
 			fantasmaRosa.MoverACoorIni();
+			puntuacion += 200;
 		}else if(comecocos.LeerCoorActuales() == fantasmaNaranja.LeerCoorActuales()){
 			fantasmaNaranja.MoverACoorIni();
+			puntuacion += 200;
 		}else if(comecocos.LeerCoorActuales() == fantasmaCian.LeerCoorActuales()){
 			fantasmaCian.MoverACoorIni();
+			puntuacion += 200;
 		}
 		
 	//Si los fantasmas no estan huyendo, se pueden comer al comecocos
@@ -148,43 +150,76 @@ void Partida::Comer(){
 }
 
 void Partida::Imprimir(){
+	HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); //Para impresion en color
+	SetConsoleTextAttribute(color, 15);
+	cout << "VIDAS: " << comecocos.LeerVidas() << "     " << "PUNTUACI" << char(224) << "N: " << puntuacion << endl;
+	cout << "TIEMPO RESTANTE: " << duracionPartida - chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoPartida).count();
+	cout << endl;
 	Coordenadas c;
 	for(int y = 0; y < mapa.h; y++) {
-        for(int x = 0; x < mapa.w; x++){
-        	c.x = x; c.y = y;
-			if(c == comecocos.LeerCoorActuales()) //comecocos
+		for(int x = 0; x < mapa.w; x++){
+			c.x = x; c.y = y;
+			if(c == comecocos.LeerCoorActuales()){ //comecocos
+				SetConsoleTextAttribute(color, 14);
 				cout << "C";
-			else if(c == fantasmaRojo.LeerCoorActuales()) //fantasmaRojo
-				if(huida) cout << "M";
-				else cout << "F";
-			else if(c == fantasmaRosa.LeerCoorActuales()) //fantasmaRosa
-				if(huida) cout << "M";
-				else cout << "f";
-			else if(c == fantasmaNaranja.LeerCoorActuales()) //fantasmaNaranja
-				if(huida) cout << "M";
-				else cout << char(159);
-			else if(c == fantasmaCian.LeerCoorActuales()) //fantasmaCian
-				if(huida) cout << "M";
-				else cout << char(156);
-            else if(mapa(c) == 0) //Pasillo
-                cout << " ";
-            else if(mapa(c) == 1) //Pared
-                cout << char(0xdb);
-            else if(mapa(c) == 2) //Coco
-                cout << char(250);
-			else if(mapa(c) == 3) //Supercoco
+			}else if(c == fantasmaRojo.LeerCoorActuales()){ //fantasmaRojo
+				if(huida){
+					SetConsoleTextAttribute(color, 9);
+					cout << "M";
+				}else{
+					SetConsoleTextAttribute(color, 12);
+					cout << "M";
+				}
+			}else if(c == fantasmaRosa.LeerCoorActuales()){ //fantasmaRosa
+				if(huida){
+					SetConsoleTextAttribute(color, 9);
+					cout << "M";
+				}else{
+					SetConsoleTextAttribute(color, 13);
+					cout << "M";
+				}
+			}else if(c == fantasmaNaranja.LeerCoorActuales()){ //fantasmaNaranja
+				if(huida){
+					SetConsoleTextAttribute(color, 9);
+					cout << "M";
+				}else{
+					SetConsoleTextAttribute(color, 6);
+					cout << "M";
+				}
+			}else if(c == fantasmaCian.LeerCoorActuales()){ //fantasmaCian
+				if(huida){
+					SetConsoleTextAttribute(color, 9);
+					cout << "M";
+				}else{
+					SetConsoleTextAttribute(color, 11);
+					cout << "M";
+				}
+			}else if(mapa(c) == 0){ //Pasillo
+				SetConsoleTextAttribute(color, 0);
+				cout << " ";
+			}else if(mapa(c) == 1){ //Pared
+				SetConsoleTextAttribute(color, 9);
+				cout << char(0xdb);
+			}else if(mapa(c) == 2){ //Coco
+				SetConsoleTextAttribute(color, 14);
+				cout << char(250);
+			}else if(mapa(c) == 3){ //Supercoco
+				SetConsoleTextAttribute(color, 14);
 				cout << "O";
-			else if(mapa(c) == 4) //Puerta del refugio
+			}else if(mapa(c) == 4){ //Puerta del refugio
+				SetConsoleTextAttribute(color, 9);
 				cout << char(176);
-    	}
+			}
+		}
 		cout << endl;	
 	}
-	cout << endl;
+	cout << endl << endl;
+	SetConsoleTextAttribute(color, 15);
 }
 
 void Partida::Jugar(){
 	
-	cout << "Comienza la partida!" << endl << endl;
+	cout << char(173) << "Comienza la partida!" << endl << endl;
 	
 	while(enCurso){
 		
@@ -193,24 +228,23 @@ void Partida::Jugar(){
 		comecocos.Moverse(); //Aqui se comprueba si es posible moverse en la direccion deseada y, si es posible, se hace; si no, se mantiene la direccion actual
 		
 		/*Movimiento de los fantasmas:
-		el metodo Moverse determina primero el objetivo, luego llama al algoritmo A*
-		(que determina el camino optimo hasta las coordenadas deseadas y, sabiendo el camino,
+		El metodo Moverse determina primero el objetivo, luego llama a un metodo SiguientePosicion
+		(que determina, utilizando A*, el camino optimo hasta el objetivo y, sabiendo el camino,
 		determina a que casilla se tiene que mover el fantasma) y finalmente mueve el fantasma*/
 		fantasmaRojo.Moverse(huida, comecocos.LeerCoorActuales(), comecocos.LeerDirActual());
 		fantasmaRosa.Moverse(huida, comecocos.LeerCoorActuales(), comecocos.LeerDirActual());
 		fantasmaNaranja.Moverse(huida, comecocos.LeerCoorActuales(), comecocos.LeerDirActual());
 		fantasmaCian.Moverse(huida, comecocos.LeerCoorActuales(), comecocos.LeerDirActual());
-		/*Sobre el objetivo de cada fantasma:
+		/*Objetivo de cada fantasma:
+			Si estan huyendo, el objetivo de todos ellos es entrar en el refugio.
 			Si no estan huyendo:
-				- Para el fantasmaRojo el objetivo seran las coordenadas de Pac-Man.
-				- El fantasmaRosa hay que ver como lo hacemos pero quiza lo mas sencillo seria que sus coordenadas deseadas fueran
-				  la casilla que Pac-Man tiene justo en frente, siendo Pac-Man para este fantasma una casilla no habitable.
+				- Para el fantasmaRojo, el objetivo son las coordenadas de Pac-Man.
+				- Para el fantasmaRosa, el objetivo es la casilla justo detras de Pac-Man.
 				- Respecto al fantasmaNaranja, si Pac-Man esta cerca (a menos de diez casillas en distancia de Manhattan) el objetivo seran
-				  las coordenadas de Pac-Man; si no, se mueve en una direccion aleatoria hasta toparse con un muro y asi sucesivamente.
-				- El fantasmaCian utilizara aleatoriamente una de las tres estrategias anteriores.
-			Si estan huyendo, el objetivo de todos ellos es entrar en el refugio.*/
+				  las coordenadas de Pac-Man; si no, se mueve aleatoriamente.
+				- El fantasmaCian utilizara aleatoriamente una de las tres estrategias anteriores.*/
 		
-		//Se comprueba si alguien se ha comido algo y se ejecutan las acciones correspondientes
+		//Se comprueba si algun ente se ha comido algo y se ejecutan las acciones correspondientes
 		Comer();
 		
 		//Se comprueba la condicion de victoria
@@ -222,20 +256,20 @@ void Partida::Jugar(){
 		//Se comprueba si ha finalizado la huida en caso de que este activada
 		ActualizarHuida();
 		
-		//Actualizar interfaz grafica
+		//Se actualiza la interfaz grafica
 		Imprimir();
 		
 	} //Fin del bucle
 	
 	if(victoria){
-		cout << "Has ganado!" << endl;
-		//Se calcula la puntuacion obtenida y se muestra
+		cout << char(173) << "HAS GANADO!" << endl;
 	}else{
-		cout << "Has perdido!" << endl;
-		if(comecocos.LeerVidas() == 0) cout << "Te quedaste sin vidas!" << endl;
-		else cout << "Te quedaste sin tiempo!" << endl;
+		cout << char(173) << "HAS PERDIDO!" << endl;
+		if(comecocos.LeerVidas() == 0) cout << "Te has quedado sin vidas." << endl;
+		else cout << "Te has quedado sin tiempo." << endl;
 	}
-	
+	cout << endl << char(173) << "Gracias por jugar! Pulsa cualquier tecla para salir." << endl;
+	while(!kbhit());
 }
 
 #endif
