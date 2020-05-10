@@ -148,6 +148,7 @@ void Partida::Comer(){
 }
 
 void Partida::Imprimir(){
+	system("CLS");//Mejora la visibilidad al borrar la pantalla antes de imprimir el siguiente frame
 	HANDLE color = GetStdHandle(STD_OUTPUT_HANDLE); //Para impresion en color
 	SetConsoleTextAttribute(color, 15);
 	cout << "VIDAS: " << comecocos.LeerVidas() << "     " << "PUNTUACI" << char(224) << "N: " << puntuacion << endl;
