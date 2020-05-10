@@ -79,9 +79,7 @@ Partida::Partida(Nivel nivel){
 }
 
 void Partida::ActualizarVictoria(){
-	if(cocosRestantes == 0){
-		victoria = true;
-	}
+	if(cocosRestantes == 0) victoria = true;
 }
 
 void Partida::ActualizarEnCurso(){
@@ -262,7 +260,14 @@ void Partida::Jugar(){
 	} //Fin del bucle
 	
 	if(victoria){
+		int bonusTiempo = duracionPartida - chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoPartida).count();
+		int bonusVidas = comecocos.LeerVidas()*100;
 		cout << char(173) << "HAS GANADO!" << endl;
+		cout << "Puntuaci" << char(162) << "n final:" << endl;
+		cout << "- Puntos obtenidos: " << puntuacion << endl;
+		cout << "- Bonus de tiempo: " << bonusTiempo << endl;
+		cout << "- Bonus de vidas: " << bonusVidas << endl;
+		cout << "TOTAL: " << puntuacion + bonusTiempo + bonusVidas << endl;
 	}else{
 		cout << char(173) << "HAS PERDIDO!" << endl;
 		if(comecocos.LeerVidas() == 0) cout << "Te has quedado sin vidas." << endl;
