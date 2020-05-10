@@ -162,37 +162,37 @@ void Partida::Imprimir(){
 				SetConsoleTextAttribute(color, 14);
 				cout << "C";
 			}else if(c == fantasmaRojo.LeerCoorActuales()){ //fantasmaRojo
-				if(huida){
+				if(huida && chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoHuida).count() > 0.8*duracionHuida)
+					SetConsoleTextAttribute(color, 15); //Cuando queda poco para que desaparezca el efecto del supercoco, los fantasmas se vuelven blancos
+				else if(huida)
 					SetConsoleTextAttribute(color, 9);
-					cout << "M";
-				}else{
+				else
 					SetConsoleTextAttribute(color, 12);
-					cout << "M";
-				}
+				cout << "M";
 			}else if(c == fantasmaRosa.LeerCoorActuales()){ //fantasmaRosa
-				if(huida){
+				if(huida && chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoHuida).count() > 0.8*duracionHuida)
+					SetConsoleTextAttribute(color, 15);
+				else if(huida)
 					SetConsoleTextAttribute(color, 9);
-					cout << "M";
-				}else{
+				else
 					SetConsoleTextAttribute(color, 13);
-					cout << "M";
-				}
+				cout << "M";
 			}else if(c == fantasmaNaranja.LeerCoorActuales()){ //fantasmaNaranja
-				if(huida){
+				if(huida && chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoHuida).count() > 0.8*duracionHuida)
+					SetConsoleTextAttribute(color, 15);
+				else if(huida)
 					SetConsoleTextAttribute(color, 9);
-					cout << "M";
-				}else{
+				else
 					SetConsoleTextAttribute(color, 6);
-					cout << "M";
-				}
+				cout << "M";
 			}else if(c == fantasmaCian.LeerCoorActuales()){ //fantasmaCian
-				if(huida){
+				if(huida && chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - tComienzoHuida).count() > 0.8*duracionHuida)
+					SetConsoleTextAttribute(color, 15);
+				else if(huida)
 					SetConsoleTextAttribute(color, 9);
-					cout << "M";
-				}else{
+				else
 					SetConsoleTextAttribute(color, 11);
-					cout << "M";
-				}
+				cout << "M";
 			}else if(mapa(c) == 0){ //Pasillo
 				SetConsoleTextAttribute(color, 0);
 				cout << " ";
