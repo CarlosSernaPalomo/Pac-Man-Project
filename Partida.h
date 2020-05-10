@@ -274,8 +274,12 @@ void Partida::Jugar(){
 		if(comecocos.LeerVidas() == 0) cout << "Te has quedado sin vidas." << endl;
 		else cout << "Te has quedado sin tiempo." << endl;
 	}
-	cout << endl << char(173) << "Gracias por jugar! Pulsa cualquier tecla para salir." << endl;
-	while(!kbhit());
+	cout << endl << char(173) << "Gracias por jugar! Pulsa la barra espaciadora para salir." << endl;
+	//while(!kbhit());
+	while(true){
+		kbhit();
+		if(getch() == ' ') break;
+	}
 }
 
 #endif
