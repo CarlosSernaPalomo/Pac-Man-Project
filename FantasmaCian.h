@@ -12,13 +12,16 @@ using namespace std;
 class FantasmaCian:public Fantasma{
 	public:
 		void Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos);
+	private:
+		int comportamiento = rand()%3;
+		int tocaCambiar = 5;
 };
 
 void FantasmaCian::Moverse(bool huida, Coordenadas coorActualesComecocos, char dirActualComecocos){
+	
 	if(huida) Huir(coorActualesComecocos);
 	else{
-		int n = rand()%3;
-		switch(n){
+		switch(comportamiento){
 			case 0: //Comportamiento de fantasmaRojo
 				Cazar(coorActualesComecocos);
 				break;
@@ -33,6 +36,12 @@ void FantasmaCian::Moverse(bool huida, Coordenadas coorActualesComecocos, char d
 				else Deambular();
 		}
 	}
+	
+	if(tocaCambiar == 1){
+		tocaCambiar = 5;
+		comportamiento = rand()%3;
+	}else tocaCambiar--;
+	
 }
 
 #endif

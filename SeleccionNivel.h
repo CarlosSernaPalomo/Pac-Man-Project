@@ -80,7 +80,7 @@ Nivel SeleccionNivel(){
 	nivelNormal.duracionPartida = 1000;
 	nivelNormal.periodo = 500;
 	
-	nivelDificil.vidasIni = 1;
+	nivelDificil.vidasIni = 1000;
 	nivelDificil.duracionHuida = 5;
 	nivelDificil.duracionPartida = 250;
 	nivelDificil.periodo = 250;

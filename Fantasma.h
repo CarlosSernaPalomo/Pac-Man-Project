@@ -76,20 +76,24 @@ void Fantasma::Cazar(Coordenadas coorActualesComecocos){
 }
 
 void Fantasma::Emboscar(Coordenadas coorActualesComecocos, char dirActualComecocos){
-	//El objetivo es tambien la casilla donde esta Pac-Man, pero acercandose a Pac-Man por delante
-	Coordenadas objetivo = coorActualesComecocos;
-	if(dirActualComecocos == 'w') objetivo.y--;
-	else if(dirActualComecocos == 's') objetivo.y++;
-	else if(dirActualComecocos == 'a') objetivo.x--;
-	else if(dirActualComecocos == 'd') objetivo.x++;
-	//Se hace a la casilla justo detras de Pac-Man no habitable para el fantasma. Esto se hace para asegurar que el fantasma se acerque por delante
+	/*El objetivo es tambien la casilla donde esta Pac-Man, pero acercandose a Pac-Man por delante.
+	Para ello, se hace a la casilla justo detras de Pac-Man no habitable para el fantasma*/
 	Coordenadas detras = coorActualesComecocos;
-	if(dirActualComecocos == 'w') detras.y++;
-	else if(dirActualComecocos == 's') detras.y--;
-	else if(dirActualComecocos == 'a') detras.x++;
-	else if(dirActualComecocos == 'd') detras.x--;
+	switch(dirActualComecocos){
+		case 'w':
+			detras.y++;
+			break;
+		case 's':
+			detras.y--;
+			break;
+		case 'a':
+			detras.x++;
+			break;
+		case 'd':
+			detras.x--;
+	}
 	casillasHabitables.Modificar(detras, 1);
-	coorActuales = SiguientePosicion(coorActuales, objetivo, casillasHabitables);
+	coorActuales = SiguientePosicion(coorActuales, coorActualesComecocos, casillasHabitables);
 	//Se vuelve a marcar la casilla detras de Pac-Man como habitable
 	casillasHabitables.Modificar(detras, 0);
 }
