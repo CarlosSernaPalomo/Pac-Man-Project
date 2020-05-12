@@ -1,2 +1,4 @@
 # Pac-Man-Project
-Trabajo Informática Avanzada
+Trabajo Informática Avanzada.
+
+Juego de C++ a traves de implementacion algoritmo A*.
