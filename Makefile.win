@@ -1,0 +1,46 @@
+# Project: PacMan
+# Compiler: Default GCC compiler
+# Compiler Type: MingW 3
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 13/05/20 12:30
+
+WXLIBNAME = wxmsw29u
+CPP       = g++.exe
+CC        = gcc.exe
+WINDRES   = "windres.exe"
+OBJ       = Objects/MingW/PacManApp.o Objects/MingW/PacManFrm.o Objects/MingW/PacMan_private.res
+LINKOBJ   = "Objects/MingW/PacManApp.o" "Objects/MingW/PacManFrm.o" Objects/MingW/PacMan_private.res
+LIBS      = -L"C:/wxDevCppP7-64b/App/devcpp/lib/wx/gcc_lib" -L"C:/wxDevCppP7-64b/App/devcpp/lib" -L"C:/wxDevCppP7-64b/App/devcpp/MinGW32/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32  
+INCS      = -I"C:/wxDevCppP7-64b/App/devcpp/MinGW32/include"
+CXXINCS   = -I"C:/wxDevCppP7-64b/App/devcpp/MinGW32/include" -I"C:/wxDevCppP7-64b/App/devcpp/" -I"C:/wxDevCppP7-64b/App/devcpp/include/common" -I"C:/wxDevCppP7-64b/App/devcpp/include"
+RCINCS    = --include-dir "C:/WXDEVC~1/App/devcpp/include/common"
+BIN       = Output/MingW/PacMan.exe
+DEFINES   = -D__WXMSW__ -D__GNUWIN32__ -D_UNICODE
+CXXFLAGS  = $(CXXINCS) $(DEFINES)  
+CFLAGS    = $(INCS) $(DEFINES)  
+GPROF     = gprof.exe
+ifeq ($(OS),Windows_NT)
+   RM = del /Q
+   FixPath = $(subst /,\,$1)
+else
+   RM = rm -f
+   FixPath = $1
+endif
+LINK      = g++.exe
+
+.PHONY: all all-before all-after clean clean-custom
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	$(RM) $(call FixPath,$(LINKOBJ)) "$(call FixPath,$(BIN))"
+
+$(BIN): $(OBJ)
+	$(LINK) $(LINKOBJ) -o "$(BIN)" $(LIBS) 
+
+Objects/MingW/PacManApp.o: $(GLOBALDEPS) PacManApp.cpp PacManApp.h PacManFrm.h
+	$(CPP) -c PacManApp.cpp -o Objects/MingW/PacManApp.o $(CXXFLAGS)
+
+Objects/MingW/PacManFrm.o: $(GLOBALDEPS) PacManFrm.cpp PacManFrm.h
+	$(CPP) -c PacManFrm.cpp -o Objects/MingW/PacManFrm.o $(CXXFLAGS)
+
+Objects/MingW/PacMan_private.res: Objects/MingW/PacMan_private.rc PacManApp.rc 
+	$(WINDRES) --input-format=rc -o Objects/MingW/PacMan_private.res $(RCINCS) Objects/MingW/PacMan_private.rc -O coff
