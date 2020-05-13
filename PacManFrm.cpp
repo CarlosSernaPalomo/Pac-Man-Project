@@ -55,7 +55,7 @@ void PacManFrm::CreateGUIControls()
 
 	wxInitAllImageHandlers();   //Initialize graphic format handlers
 
-	Jugador = new wxStaticBitmap(this, ID_JUGADOR, wxBitmap(_("D:/Universidad/4º/Informatica Avanzada/Practicas/Pacman visual/Imagenes/Pacman.bmp"), wxBITMAP_TYPE_BMP), wxPoint(0, 0), wxSize(7, 7) );
+	Jugador = new wxStaticBitmap(this, ID_JUGADOR, wxBitmap(_("Imagenes/Pacman.bmp"), wxBITMAP_TYPE_BMP), wxPoint(0, 0), wxSize(7, 7) );
 
 	WxEdit4 = new wxTextCtrl(this, ID_WXEDIT4, _("0"), wxPoint(270, 220), wxSize(120, 40), 0, wxDefaultValidator, _("WxEdit4"));
 	WxEdit4->SetFont(wxFont(18, wxSWISS, wxNORMAL, wxNORMAL, false));
@@ -83,7 +83,7 @@ void PacManFrm::CreateGUIControls()
 
 	Dificultad = new wxStaticText(this, ID_DIFICULTAD, _("Dificultad"), wxPoint(270, 20), wxDefaultSize, 0, _("Dificultad"));
 
-	WxStaticBitmap1 = new wxStaticBitmap(this, ID_WXSTATICBITMAP1, wxBitmap(_("D:/Universidad/4º/Informatica Avanzada/Practicas/Pacman visual/Imagenes/Mapa.bmp"), wxBITMAP_TYPE_BMP), wxPoint(30, 5), wxSize(224, 249) );
+	WxStaticBitmap1 = new wxStaticBitmap(this, ID_WXSTATICBITMAP1, wxBitmap(_("Imagenes/Mapa.bmp"), wxBITMAP_TYPE_BMP), wxPoint(30, 5), wxSize(224, 249) );
 
 	W = new wxButton(this, ID_W, _("W"), wxPoint(120, 261), wxSize(40, 40), 0, wxDefaultValidator, _("W"));
 
